@@ -1,4 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using SkillSwap.Platform.Discovery.Application.CommandServices;
+using SkillSwap.Platform.Discovery.Application.Internal.CommandServices;
+using SkillSwap.Platform.Discovery.Application.Internal.QueryServices;
+using SkillSwap.Platform.Discovery.Application.QueryServices;
+using SkillSwap.Platform.Discovery.Domain.Repositories;
+using SkillSwap.Platform.Discovery.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using SkillSwap.Platform.Moderation.Application.CommandServices;
 using SkillSwap.Platform.Moderation.Application.Internal.CommandServices;
 using SkillSwap.Platform.Moderation.Application.Internal.QueryServices;
@@ -22,6 +28,17 @@ builder.Logging.AddConsole();
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 // Localization
 builder.Services.AddLocalization();
@@ -49,6 +66,11 @@ builder.Services.AddScoped<IReportQueryService, ReportQueryService>();
 builder.Services.AddScoped<ISanctionCommandService, SanctionCommandService>();
 builder.Services.AddScoped<ISanctionQueryService, SanctionQueryService>();
 
+// Discovery Bounded Context
+builder.Services.AddScoped<ITutorRepository, TutorRepository>();
+builder.Services.AddScoped<ITutorCommandService, TutorCommandService>();
+builder.Services.AddScoped<ITutorQueryService, TutorQueryService>();
+
 // Workspace Bounded Context
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
@@ -59,12 +81,10 @@ builder.Services.AddScoped<IMessageQueryService, MessageQueryService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 

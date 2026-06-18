@@ -19,6 +19,62 @@ namespace SkillSwap.Platform.Migrations
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("SkillSwap.Platform.Discovery.Domain.Model.Aggregates.Tutor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AvatarUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("Career")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("ExperienceYears")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MainSubject")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<bool>("Online")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("double");
+
+                    b.Property<int>("ReviewCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("University")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<bool>("Verified")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tutors", (string)null);
+                });
+
             modelBuilder.Entity("SkillSwap.Platform.Moderation.Domain.Model.Aggregates.Report", b =>
                 {
                     b.Property<int>("Id")
@@ -130,6 +186,50 @@ namespace SkillSwap.Platform.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("sessions", (string)null);
+                });
+
+            modelBuilder.Entity("SkillSwap.Platform.Discovery.Domain.Model.Aggregates.Tutor", b =>
+                {
+                    b.OwnsOne("SkillSwap.Platform.Discovery.Domain.Model.ValueObjects.TutorId", "TutorUserId", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int")
+                                .HasColumnName("UserId");
+
+                            b1.HasKey("Id");
+
+                            b1.ToTable("tutors");
+
+                            b1.WithOwner()
+                                .HasForeignKey("Id");
+                        });
+
+                    b.OwnsOne("SkillSwap.Platform.Discovery.Domain.Model.ValueObjects.TutorSkills", "TutorSkills", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Skills")
+                                .IsRequired()
+                                .HasColumnType("longtext")
+                                .HasColumnName("Skills");
+
+                            b1.HasKey("Id");
+
+                            b1.ToTable("tutors");
+
+                            b1.WithOwner()
+                                .HasForeignKey("Id");
+                        });
+
+                    b.Navigation("TutorSkills")
+                        .IsRequired();
+
+                    b.Navigation("TutorUserId")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SkillSwap.Platform.Moderation.Domain.Model.Aggregates.Report", b =>
