@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 
@@ -10,9 +11,11 @@ using SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.C
 namespace SkillSwap.Platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260618190840_AddTutorsTable")]
+    partial class AddTutorsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,31 +127,6 @@ namespace SkillSwap.Platform.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("sanctions", (string)null);
-                });
-
-            modelBuilder.Entity("SkillSwap.Platform.Reputation.Domain.Model.Aggregates.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("varchar(1000)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ReviewedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("SessionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("reviews", (string)null);
                 });
 
             modelBuilder.Entity("SkillSwap.Platform.Workspace.Domain.Model.Aggregates.Message", b =>
@@ -320,49 +298,6 @@ namespace SkillSwap.Platform.Migrations
                         });
 
                     b.Navigation("SanctionedUserId")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SkillSwap.Platform.Reputation.Domain.Model.Aggregates.Review", b =>
-                {
-                    b.OwnsOne("SkillSwap.Platform.Reputation.Domain.Model.ValueObjects.ReviewedTutorId", "ReviewedTutorId", b1 =>
-                        {
-                            b1.Property<int>("Id")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("TutorId")
-                                .HasColumnType("int")
-                                .HasColumnName("ReviewedTutorId");
-
-                            b1.HasKey("Id");
-
-                            b1.ToTable("reviews");
-
-                            b1.WithOwner()
-                                .HasForeignKey("Id");
-                        });
-
-                    b.OwnsOne("SkillSwap.Platform.Reputation.Domain.Model.ValueObjects.ReviewerId", "ReviewerUserId", b1 =>
-                        {
-                            b1.Property<int>("Id")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("UserId")
-                                .HasColumnType("int")
-                                .HasColumnName("ReviewerUserId");
-
-                            b1.HasKey("Id");
-
-                            b1.ToTable("reviews");
-
-                            b1.WithOwner()
-                                .HasForeignKey("Id");
-                        });
-
-                    b.Navigation("ReviewedTutorId")
-                        .IsRequired();
-
-                    b.Navigation("ReviewerUserId")
                         .IsRequired();
                 });
 
