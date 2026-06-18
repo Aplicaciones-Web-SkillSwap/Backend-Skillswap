@@ -23,6 +23,17 @@ builder.Logging.AddConsole();
 // Add services to the container.
 builder.Services.AddControllers();
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 // Localization
 builder.Services.AddLocalization();
 
@@ -61,6 +72,8 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
