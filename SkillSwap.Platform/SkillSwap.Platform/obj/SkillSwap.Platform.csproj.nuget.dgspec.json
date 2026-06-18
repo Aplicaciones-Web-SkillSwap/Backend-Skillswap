@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Administrator\\RiderProjects\\Backend-Skillswap\\SkillSwap.Platform\\SkillSwap.Platform\\SkillSwap.Platform.csproj": {}
+    "C:\\Users\\Victor\\Desktop\\app web\\back\\SkillSwap.Platform\\SkillSwap.Platform\\SkillSwap.Platform.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrator\\RiderProjects\\Backend-Skillswap\\SkillSwap.Platform\\SkillSwap.Platform\\SkillSwap.Platform.csproj": {
+    "C:\\Users\\Victor\\Desktop\\app web\\back\\SkillSwap.Platform\\SkillSwap.Platform\\SkillSwap.Platform.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\RiderProjects\\Backend-Skillswap\\SkillSwap.Platform\\SkillSwap.Platform\\SkillSwap.Platform.csproj",
+        "projectUniqueName": "C:\\Users\\Victor\\Desktop\\app web\\back\\SkillSwap.Platform\\SkillSwap.Platform\\SkillSwap.Platform.csproj",
         "projectName": "SkillSwap.Platform",
-        "projectPath": "C:\\Users\\Administrator\\RiderProjects\\Backend-Skillswap\\SkillSwap.Platform\\SkillSwap.Platform\\SkillSwap.Platform.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\RiderProjects\\Backend-Skillswap\\SkillSwap.Platform\\SkillSwap.Platform\\obj\\",
+        "projectPath": "C:\\Users\\Victor\\Desktop\\app web\\back\\SkillSwap.Platform\\SkillSwap.Platform\\SkillSwap.Platform.csproj",
+        "packagesPath": "C:\\Users\\Victor\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Victor\\Desktop\\app web\\back\\SkillSwap.Platform\\SkillSwap.Platform\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Victor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -49,7 +56,7 @@
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[10.0.9, )"
+              "version": "[8.0.13, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -97,7 +104,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.422/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
