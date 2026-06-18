@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using SkillSwap.Platform.Discovery.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using SkillSwap.Platform.Moderation.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
+using SkillSwap.Platform.Workspace.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 
 namespace SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 
@@ -18,6 +18,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         base.OnModelCreating(builder);
 
         builder.ApplyModerationConfiguration();
-        builder.ApplyDiscoveryConfiguration();
+        builder.ApplyWorkspaceConfiguration();
     }
 }
