@@ -8,6 +8,12 @@ using SkillSwap.Platform.Moderation.Infrastructure.Persistence.EntityFrameworkCo
 using SkillSwap.Platform.Shared.Domain.Repositories;
 using SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 using SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using SkillSwap.Platform.Workspace.Application.CommandServices;
+using SkillSwap.Platform.Workspace.Application.Internal.CommandServices;
+using SkillSwap.Platform.Workspace.Application.Internal.QueryServices;
+using SkillSwap.Platform.Workspace.Application.QueryServices;
+using SkillSwap.Platform.Workspace.Domain.Repositories;
+using SkillSwap.Platform.Workspace.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +23,7 @@ builder.Logging.AddConsole();
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Localization (for error messages, e.g. ErrorMessages.resx)
+// Localization
 builder.Services.AddLocalization();
 
 // OpenAPI / Swagger
@@ -42,6 +48,14 @@ builder.Services.AddScoped<IReportCommandService, ReportCommandService>();
 builder.Services.AddScoped<IReportQueryService, ReportQueryService>();
 builder.Services.AddScoped<ISanctionCommandService, SanctionCommandService>();
 builder.Services.AddScoped<ISanctionQueryService, SanctionQueryService>();
+
+// Workspace Bounded Context
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<ISessionCommandService, SessionCommandService>();
+builder.Services.AddScoped<IMessageCommandService, MessageCommandService>();
+builder.Services.AddScoped<ISessionQueryService, SessionQueryService>();
+builder.Services.AddScoped<IMessageQueryService, MessageQueryService>();
 
 var app = builder.Build();
 
