@@ -1,10 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using SkillSwap.Platform.Discovery.Application.CommandServices;
-using SkillSwap.Platform.Discovery.Application.Internal.CommandServices;
-using SkillSwap.Platform.Discovery.Application.Internal.QueryServices;
-using SkillSwap.Platform.Discovery.Application.QueryServices;
-using SkillSwap.Platform.Discovery.Domain.Repositories;
-using SkillSwap.Platform.Discovery.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using SkillSwap.Platform.Moderation.Application.CommandServices;
 using SkillSwap.Platform.Moderation.Application.Internal.CommandServices;
 using SkillSwap.Platform.Moderation.Application.Internal.QueryServices;
@@ -14,6 +8,12 @@ using SkillSwap.Platform.Moderation.Infrastructure.Persistence.EntityFrameworkCo
 using SkillSwap.Platform.Shared.Domain.Repositories;
 using SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 using SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using SkillSwap.Platform.Workspace.Application.CommandServices;
+using SkillSwap.Platform.Workspace.Application.Internal.CommandServices;
+using SkillSwap.Platform.Workspace.Application.Internal.QueryServices;
+using SkillSwap.Platform.Workspace.Application.QueryServices;
+using SkillSwap.Platform.Workspace.Domain.Repositories;
+using SkillSwap.Platform.Workspace.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,10 +49,13 @@ builder.Services.AddScoped<IReportQueryService, ReportQueryService>();
 builder.Services.AddScoped<ISanctionCommandService, SanctionCommandService>();
 builder.Services.AddScoped<ISanctionQueryService, SanctionQueryService>();
 
-// Discovery Bounded Context
-builder.Services.AddScoped<ITutorRepository, TutorRepository>();
-builder.Services.AddScoped<ITutorCommandService, TutorCommandService>();
-builder.Services.AddScoped<ITutorQueryService, TutorQueryService>();
+// Workspace Bounded Context
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<ISessionCommandService, SessionCommandService>();
+builder.Services.AddScoped<IMessageCommandService, MessageCommandService>();
+builder.Services.AddScoped<ISessionQueryService, SessionQueryService>();
+builder.Services.AddScoped<IMessageQueryService, MessageQueryService>();
 
 var app = builder.Build();
 

@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Discovery\Resources\" />
+      <Folder Include="Workspace\Resources\" />
     </ItemGroup>
 
 </Project>
