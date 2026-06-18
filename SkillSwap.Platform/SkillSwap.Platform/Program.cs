@@ -1,4 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using SkillSwap.Platform.Discovery.Application.CommandServices;
+using SkillSwap.Platform.Discovery.Application.Internal.CommandServices;
+using SkillSwap.Platform.Discovery.Application.Internal.QueryServices;
+using SkillSwap.Platform.Discovery.Application.QueryServices;
+using SkillSwap.Platform.Discovery.Domain.Repositories;
+using SkillSwap.Platform.Discovery.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using SkillSwap.Platform.Moderation.Application.CommandServices;
 using SkillSwap.Platform.Moderation.Application.Internal.CommandServices;
 using SkillSwap.Platform.Moderation.Application.Internal.QueryServices;
@@ -17,7 +23,7 @@ builder.Logging.AddConsole();
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Localization (for error messages, e.g. ErrorMessages.resx)
+// Localization
 builder.Services.AddLocalization();
 
 // OpenAPI / Swagger
@@ -42,6 +48,11 @@ builder.Services.AddScoped<IReportCommandService, ReportCommandService>();
 builder.Services.AddScoped<IReportQueryService, ReportQueryService>();
 builder.Services.AddScoped<ISanctionCommandService, SanctionCommandService>();
 builder.Services.AddScoped<ISanctionQueryService, SanctionQueryService>();
+
+// Discovery Bounded Context
+builder.Services.AddScoped<ITutorRepository, TutorRepository>();
+builder.Services.AddScoped<ITutorCommandService, TutorCommandService>();
+builder.Services.AddScoped<ITutorQueryService, TutorQueryService>();
 
 var app = builder.Build();
 
