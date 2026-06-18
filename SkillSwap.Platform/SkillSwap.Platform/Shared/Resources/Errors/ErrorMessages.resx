@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <data name="GenericError" xml:space="preserve">
+        <value>An error occurred.</value>
+    </data>
+    <data name="OperationCancelled" xml:space="preserve">
+        <value>The operation was cancelled.</value>
+    </data>
+    <data name="DatabaseError" xml:space="preserve">
+        <value>A database error occurred.</value>
+    </data>
+    <data name="InternalServerError" xml:space="preserve">
+        <value>An unexpected internal error occurred.</value>
+    </data>
+    <data name="ReportNotFound" xml:space="preserve">
+        <value>The specified report was not found.</value>
+    </data>
+    <data name="SanctionNotFound" xml:space="preserve">
+        <value>The specified sanction was not found.</value>
+    </data>
+    <data name="SelfReportNotAllowed" xml:space="preserve">
+        <value>A user cannot report themselves.</value>
+    </data>
+    <data name="DuplicatePendingReport" xml:space="preserve">
+        <value>A pending report already exists between these two users.</value>
+    </data>
+    <data name="InvalidSanctionDuration" xml:space="preserve">
+        <value>The sanction duration cannot be negative.</value>
+    </data>
+</root>
