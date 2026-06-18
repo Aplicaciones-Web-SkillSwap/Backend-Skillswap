@@ -20,6 +20,12 @@ using SkillSwap.Platform.Workspace.Application.Internal.QueryServices;
 using SkillSwap.Platform.Workspace.Application.QueryServices;
 using SkillSwap.Platform.Workspace.Domain.Repositories;
 using SkillSwap.Platform.Workspace.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using SkillSwap.Platform.Reputation.Application.CommandServices;
+using SkillSwap.Platform.Reputation.Application.Internal.CommandServices;
+using SkillSwap.Platform.Reputation.Application.Internal.QueryServices;
+using SkillSwap.Platform.Reputation.Application.QueryServices;
+using SkillSwap.Platform.Reputation.Domain.Repositories;
+using SkillSwap.Platform.Reputation.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +84,11 @@ builder.Services.AddScoped<ISessionCommandService, SessionCommandService>();
 builder.Services.AddScoped<IMessageCommandService, MessageCommandService>();
 builder.Services.AddScoped<ISessionQueryService, SessionQueryService>();
 builder.Services.AddScoped<IMessageQueryService, MessageQueryService>();
+
+// Reputation Bounded Context
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IReviewCommandService, ReviewCommandService>();
+builder.Services.AddScoped<IReviewQueryService, ReviewQueryService>();
 
 var app = builder.Build();
 
