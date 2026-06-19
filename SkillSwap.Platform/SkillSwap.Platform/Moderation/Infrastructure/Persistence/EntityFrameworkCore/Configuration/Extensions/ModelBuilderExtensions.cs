@@ -24,6 +24,12 @@ public static class ModelBuilderExtensions
                 v.WithOwner().HasForeignKey("Id");
                 v.Property(p => p.UserId).HasColumnName("ReportedUserId");
             });
+        builder.Entity<Report>().OwnsOne(r => r.ReportSessionId,
+            v =>
+            {
+                v.WithOwner().HasForeignKey("Id");
+                v.Property(p => p.Value).HasColumnName("SessionId");
+            });
         builder.Entity<Report>().Property(r => r.Reason).IsRequired().HasMaxLength(500);
         builder.Entity<Report>().Property(r => r.Status).IsRequired().HasMaxLength(50);
 
