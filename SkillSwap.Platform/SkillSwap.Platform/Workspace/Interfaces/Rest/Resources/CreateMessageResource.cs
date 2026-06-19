@@ -22,5 +22,5 @@ public record CreateMessageResource(
     int SessionId,
     int SenderId,
     string Content,
-    string FileUrl,
-    string FileName);
+    string? FileUrl,
+    string? FileName);
