@@ -116,4 +116,24 @@ public class SessionsController(
             updatedSession => Ok(SessionResourceFromEntityAssembler.ToResourceFromEntity(updatedSession))
         );
     }
+    
+    [HttpPut("{sessionId:int}")]
+    [SwaggerOperation("Update Session", "Update a session by its unique identifier.", OperationId = "UpdateSession")]
+    [SwaggerResponse(200, "The session was updated.", typeof(SessionResource))]
+    [SwaggerResponse(404, "The session was not found.")]
+    public async Task<IActionResult> UpdateSession(int sessionId, UpdateSessionStatusResource resource,
+        CancellationToken cancellationToken)
+    {
+        var updateSessionStatusCommand =
+            UpdateSessionStatusCommandFromResourceAssembler.ToCommandFromResource(sessionId, resource);
+        var result = await sessionCommandService.Handle(updateSessionStatusCommand, cancellationToken);
+
+        return WorkspaceActionResultAssembler.ToActionResultFromUpdateSessionStatusResult(
+            this,
+            result,
+            _errorLocalizer,
+            _problemDetailsFactory,
+            updatedSession => Ok(SessionResourceFromEntityAssembler.ToResourceFromEntity(updatedSession))
+        );
+    }
 }
