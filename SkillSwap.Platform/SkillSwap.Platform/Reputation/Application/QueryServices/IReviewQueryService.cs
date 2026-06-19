@@ -37,4 +37,14 @@ public interface IReviewQueryService
     ///     A list of <see cref="Review" /> objects
     /// </returns>
     Task<IEnumerable<Review>> Handle(GetReviewsByTutorIdQuery query, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Handle get tutor reputation summary query
+    /// </summary>
+    /// <param name="query">The <see cref="GetTutorReputationSummaryQuery" /> query</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>
+    ///     A tuple with the average rating and total review count
+    /// </returns>
+    Task<(double AverageRating, int ReviewCount)> Handle(GetTutorReputationSummaryQuery query, CancellationToken cancellationToken);
 }

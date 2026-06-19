@@ -9,6 +9,16 @@ namespace SkillSwap.Platform.Payments.Application.QueryServices;
 public interface IWalletQueryService
 {
     /// <summary>
+    ///     Handle get all wallets query
+    /// </summary>
+    /// <param name="query">The <see cref="GetAllWalletsQuery" /> query</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>
+    ///     A list of <see cref="Wallet" /> objects
+    /// </returns>
+    Task<IEnumerable<Wallet>> Handle(GetAllWalletsQuery query, CancellationToken cancellationToken);
+
+    /// <summary>
     ///     Handle get wallet by id query
     /// </summary>
     /// <param name="query">The <see cref="GetWalletByIdQuery" /> query</param>

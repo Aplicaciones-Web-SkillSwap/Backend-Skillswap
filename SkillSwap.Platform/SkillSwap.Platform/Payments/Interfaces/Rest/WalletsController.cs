@@ -26,6 +26,18 @@ public class WalletsController(
 {
     private readonly IStringLocalizer<ErrorMessage> _errorLocalizer = errorLocalizer;
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
+    
+    
+    [HttpGet]
+    [SwaggerOperation("Get All Wallets", "Get all wallets.", OperationId = "GetAllWallets")]
+    [SwaggerResponse(200, "The wallets were found and returned.", typeof(IEnumerable<WalletResource>))]
+    public async Task<IActionResult> GetAllWallets(CancellationToken cancellationToken)
+    {
+        var getAllWalletsQuery = new GetAllWalletsQuery();
+        var wallets = await walletQueryService.Handle(getAllWalletsQuery, cancellationToken);
+        var walletResources = wallets.Select(WalletResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(walletResources);
+    }
 
     [HttpGet("{walletId:int}")]
     [SwaggerOperation("Get Wallet by Id", "Get a wallet by its unique identifier.", OperationId = "GetWalletById")]

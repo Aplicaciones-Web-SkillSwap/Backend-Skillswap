@@ -14,6 +14,12 @@ namespace SkillSwap.Platform.Payments.Application.Internal.QueryServices;
 public class WalletQueryService(IWalletRepository walletRepository) : IWalletQueryService
 {
     /// <inheritdoc />
+    public async Task<IEnumerable<Wallet>> Handle(GetAllWalletsQuery query, CancellationToken cancellationToken)
+    {
+        return await walletRepository.ListAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
     public async Task<Wallet?> Handle(GetWalletByIdQuery query, CancellationToken cancellationToken)
     {
         return await walletRepository.FindByIdAsync(query.WalletId, cancellationToken);
