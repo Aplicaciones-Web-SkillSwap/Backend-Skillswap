@@ -16,6 +16,7 @@ public partial class Report
     {
         ReporterUserId = new ReporterId();
         ReportedUserId = new ReportedUserId();
+        ReportSessionId = new SessionId();
         Reason = string.Empty;
         Status = "pending";
         Closed = false;
@@ -26,6 +27,7 @@ public partial class Report
     {
         ReporterUserId = new ReporterId(command.ReporterUserId);
         ReportedUserId = new ReportedUserId(command.ReportedUserId);
+        ReportSessionId = new SessionId(command.SessionId);
         Reason = command.Reason;
         Status = "pending";
         Closed = false;
@@ -35,6 +37,7 @@ public partial class Report
     public int Id { get; private set; }
     public ReporterId ReporterUserId { get; private set; }
     public ReportedUserId ReportedUserId { get; private set; }
+    public SessionId ReportSessionId { get; private set; }
     public string Reason { get; private set; }
     public string Status { get; private set; }
     public bool Closed { get; private set; }

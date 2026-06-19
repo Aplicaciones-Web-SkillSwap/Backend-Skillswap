@@ -27,6 +27,7 @@ public static class CreateReportCommandFromResourceAssembler
         return new CreateReportCommand(
             resource.ReporterUserId,
             resource.ReportedUserId,
+            resource.SessionId,
             resource.Reason
         );
     }
