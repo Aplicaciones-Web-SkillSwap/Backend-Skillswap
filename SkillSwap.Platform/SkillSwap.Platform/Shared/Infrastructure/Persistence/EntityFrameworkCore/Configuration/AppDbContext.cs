@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SkillSwap.Platform.Discovery.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using SkillSwap.Platform.Moderation.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
+using SkillSwap.Platform.Payments.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using SkillSwap.Platform.Reputation.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using SkillSwap.Platform.Workspace.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 
@@ -23,5 +24,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.ApplyDiscoveryConfiguration();
         builder.ApplyWorkspaceConfiguration();
         builder.ApplyReputationConfiguration();
+        builder.ApplyPaymentsConfiguration();
     }
 }

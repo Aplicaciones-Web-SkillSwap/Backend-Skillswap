@@ -26,6 +26,12 @@ using SkillSwap.Platform.Reputation.Application.Internal.QueryServices;
 using SkillSwap.Platform.Reputation.Application.QueryServices;
 using SkillSwap.Platform.Reputation.Domain.Repositories;
 using SkillSwap.Platform.Reputation.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using SkillSwap.Platform.Payments.Application.CommandServices;
+using SkillSwap.Platform.Payments.Application.Internal.CommandServices;
+using SkillSwap.Platform.Payments.Application.Internal.QueryServices;
+using SkillSwap.Platform.Payments.Application.QueryServices;
+using SkillSwap.Platform.Payments.Domain.Repositories;
+using SkillSwap.Platform.Payments.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,6 +95,14 @@ builder.Services.AddScoped<IMessageQueryService, MessageQueryService>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IReviewCommandService, ReviewCommandService>();
 builder.Services.AddScoped<IReviewQueryService, ReviewQueryService>();
+
+// Payments Bounded Context
+builder.Services.AddScoped<IWalletRepository, WalletRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IWalletCommandService, WalletCommandService>();
+builder.Services.AddScoped<ITransactionCommandService, TransactionCommandService>();
+builder.Services.AddScoped<IWalletQueryService, WalletQueryService>();
+builder.Services.AddScoped<ITransactionQueryService, TransactionQueryService>();
 
 var app = builder.Build();
 
