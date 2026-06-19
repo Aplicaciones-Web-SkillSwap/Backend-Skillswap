@@ -66,6 +66,16 @@ public class ReviewsController(
         var reviewResources = reviews.Select(ReviewResourceFromEntityAssembler.ToResourceFromEntity);
         return Ok(reviewResources);
     }
+    
+    [HttpGet("tutor/{tutorId:int}/summary")]
+    [SwaggerOperation("Get Tutor Reputation Summary", "Get the average rating and review count for a specific tutor.", OperationId = "GetTutorReputationSummary")]
+    [SwaggerResponse(200, "The reputation summary was found and returned.", typeof(TutorReputationSummaryResource))]
+    public async Task<IActionResult> GetTutorReputationSummary(int tutorId, CancellationToken cancellationToken)
+    {
+        var getTutorReputationSummaryQuery = new GetTutorReputationSummaryQuery(tutorId);
+        var (averageRating, reviewCount) = await reviewQueryService.Handle(getTutorReputationSummaryQuery, cancellationToken);
+        return Ok(new TutorReputationSummaryResource(tutorId, averageRating, reviewCount));
+    }
 
     [HttpPost]
     [SwaggerOperation("Create Review", "Create a new review for a tutor.", OperationId = "CreateReview")]
