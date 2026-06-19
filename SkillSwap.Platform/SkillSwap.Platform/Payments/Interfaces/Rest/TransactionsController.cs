@@ -20,6 +20,7 @@ namespace SkillSwap.Platform.Payments.Interfaces.Rest;
 public class TransactionsController(
     ITransactionCommandService transactionCommandService,
     ITransactionQueryService transactionQueryService,
+    IDonationCommandService donationCommandService,
     IStringLocalizer<ErrorMessage> errorLocalizer,
     ProblemDetailsFactory problemDetailsFactory)
     : ControllerBase
@@ -67,6 +68,25 @@ public class TransactionsController(
             createdTransaction => CreatedAtAction(nameof(GetTransactionsByWalletId),
                 new { walletId = createdTransaction.WalletId },
                 TransactionResourceFromEntityAssembler.ToResourceFromEntity(createdTransaction))
+        );
+    }
+
+    [HttpPost("donate")]
+    [SwaggerOperation("Donate", "Make a donation from a student's wallet to a tutor's wallet, applying a 5% platform fee.", OperationId = "Donate")]
+    [SwaggerResponse(200, "The donation was completed.", typeof(DonationResultResource))]
+    [SwaggerResponse(400, "The donation was not completed (invalid amount or insufficient funds).")]
+    [SwaggerResponse(404, "The sender's or receiver's wallet was not found.")]
+    public async Task<IActionResult> Donate(DonateResource resource, CancellationToken cancellationToken)
+    {
+        var donateCommand = DonateCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var result = await donationCommandService.Handle(donateCommand, cancellationToken);
+
+        return PaymentsActionResultAssembler.ToActionResultFromDonateResult(
+            this,
+            result,
+            _errorLocalizer,
+            _problemDetailsFactory,
+            donationResult => Ok(DonationResultResourceFromEntityAssembler.ToResourceFromEntity(donationResult))
         );
     }
 }
