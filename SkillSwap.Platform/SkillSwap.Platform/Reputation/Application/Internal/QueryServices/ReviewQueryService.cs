@@ -30,4 +30,15 @@ public class ReviewQueryService(IReviewRepository reviewRepository) : IReviewQue
     {
         return await reviewRepository.FindByTutorIdAsync(query.TutorId, cancellationToken);
     }
+
+    /// <inheritdoc />
+    public async Task<(double AverageRating, int ReviewCount)> Handle(GetTutorReputationSummaryQuery query,
+        CancellationToken cancellationToken)
+    {
+        var reviews = (await reviewRepository.FindByTutorIdAsync(query.TutorId, cancellationToken)).ToList();
+        if (reviews.Count == 0) return (0.0, 0);
+
+        var average = reviews.Average(r => r.Rating);
+        return (average, reviews.Count);
+    }
 }
