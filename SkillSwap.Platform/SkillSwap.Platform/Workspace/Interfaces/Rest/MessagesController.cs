@@ -11,6 +11,8 @@ using SkillSwap.Platform.Workspace.Domain.Model.Queries;
 using SkillSwap.Platform.Workspace.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Workspace.Interfaces.Rest.Transform;
 using Swashbuckle.AspNetCore.Annotations;
+using SkillSwap.Platform.Workspace.Application.QueryServices;
+using SkillSwap.Platform.Workspace.Domain.Model.Queries;
 
 namespace SkillSwap.Platform.Workspace.Interfaces.Rest;
 
@@ -21,12 +23,30 @@ namespace SkillSwap.Platform.Workspace.Interfaces.Rest;
 public class MessagesController(
     IMessageCommandService messageCommandService,
     IMessageQueryService messageQueryService,
+    ISessionQueryService sessionQueryService,
     IStringLocalizer<ErrorMessage> errorLocalizer,
     ProblemDetailsFactory problemDetailsFactory)
     : ControllerBase
 {
     private readonly IStringLocalizer<ErrorMessage> _errorLocalizer = errorLocalizer;
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
+    
+    [HttpGet]
+    [SwaggerOperation("Get All Messages", "Get all messages.", OperationId = "GetAllMessages")]
+    [SwaggerResponse(200, "The messages were found and returned.", typeof(IEnumerable<MessageResource>))]
+    public async Task<IActionResult> GetAllMessages(CancellationToken cancellationToken)
+    {
+        var getAllSessionsQuery = new GetAllSessionsQuery();
+        var sessions = await sessionQueryService.Handle(getAllSessionsQuery, cancellationToken);
+        var messages = new List<MessageResource>();
+        foreach (var session in sessions)
+        {
+            var sessionMessages = await messageQueryService.Handle(
+                new GetMessagesBySessionIdQuery(session.Id), cancellationToken);
+            messages.AddRange(sessionMessages.Select(MessageResourceFromEntityAssembler.ToResourceFromEntity));
+        }
+        return Ok(messages);
+    }
 
     [HttpGet("session/{sessionId:int}")]
     [SwaggerOperation("Get Messages by Session Id", "Get all messages for a specific session.", OperationId = "GetMessagesBySessionId")]

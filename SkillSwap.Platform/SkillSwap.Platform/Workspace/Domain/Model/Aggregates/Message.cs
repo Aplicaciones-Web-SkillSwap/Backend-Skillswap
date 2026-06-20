@@ -24,8 +24,8 @@ public partial class Message
         SessionId = command.SessionId;
         SenderId = command.SenderId;
         Content = command.Content;
-        FileUrl = command.FileUrl;
-        FileName = command.FileName;
+        FileUrl = command.FileUrl ?? string.Empty;
+        FileName = command.FileName ?? string.Empty;
         SentAt = DateTime.UtcNow;
     }
 

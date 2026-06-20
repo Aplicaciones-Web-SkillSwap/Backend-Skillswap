@@ -27,6 +27,7 @@ public static class ReportResourceFromEntityAssembler
             entity.Id,
             entity.ReporterUserId.UserId,
             entity.ReportedUserId.UserId,
+            entity.ReportSessionId.Value,
             entity.Reason,
             entity.Status,
             entity.Closed,

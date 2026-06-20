@@ -7,6 +7,8 @@ public enum PaymentsError
     WalletAlreadyExists,
     InsufficientFunds,
     InvalidAmount,
+    SenderWalletNotFound,
+    ReceiverWalletNotFound,
     OperationCancelled,
     DatabaseError,
     InternalServerError

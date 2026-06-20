@@ -12,6 +12,9 @@ namespace SkillSwap.Platform.Moderation.Interfaces.Rest.Resources;
 /// <param name="ReportedUserId">
 ///     The unique identifier of the reported user
 /// </param>
+/// <param name="SessionId">
+///     The unique identifier of the session related to the report
+/// </param>
 /// <param name="Reason">
 ///     The reason for the report
 /// </param>
@@ -28,6 +31,7 @@ public record ReportResource(
     int Id,
     int ReporterUserId,
     int ReportedUserId,
+    int SessionId,
     string Reason,
     string Status,
     bool Closed,

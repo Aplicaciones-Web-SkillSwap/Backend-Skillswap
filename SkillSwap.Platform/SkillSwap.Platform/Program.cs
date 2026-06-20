@@ -103,6 +103,7 @@ builder.Services.AddScoped<IWalletCommandService, WalletCommandService>();
 builder.Services.AddScoped<ITransactionCommandService, TransactionCommandService>();
 builder.Services.AddScoped<IWalletQueryService, WalletQueryService>();
 builder.Services.AddScoped<ITransactionQueryService, TransactionQueryService>();
+builder.Services.AddScoped<IDonationCommandService, DonationCommandService>();
 
 var app = builder.Build();
 
