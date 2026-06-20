@@ -18,9 +18,17 @@ namespace SkillSwap.Platform.Workspace.Interfaces.Rest.Resources;
 /// <param name="FileName">
 ///     The name of the file attached to the message
 /// </param>
+/// <param name="QuizId">
+///     The unique identifier of the quiz shared in this message, if any
+/// </param>
+/// <param name="QuizTitle">
+///     The title of the quiz shared in this message, if any
+/// </param>
 public record CreateMessageResource(
     int SessionId,
     int SenderId,
     string Content,
     string? FileUrl,
-    string? FileName);
+    string? FileName,
+    int? QuizId,
+    string? QuizTitle);

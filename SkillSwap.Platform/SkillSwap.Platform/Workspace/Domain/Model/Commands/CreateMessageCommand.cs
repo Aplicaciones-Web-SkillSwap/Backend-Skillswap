@@ -5,4 +5,6 @@ public record CreateMessageCommand(
     int SenderId,
     string Content,
     string? FileUrl,
-    string? FileName);
+    string? FileName,
+    int? QuizId,
+    string? QuizTitle);

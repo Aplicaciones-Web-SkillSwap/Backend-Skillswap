@@ -33,6 +33,8 @@ public static class ModelBuilderExtensions
         builder.Entity<Message>().Property(m => m.Content).IsRequired().HasMaxLength(2000);
         builder.Entity<Message>().Property(m => m.FileUrl).HasMaxLength(500);
         builder.Entity<Message>().Property(m => m.FileName).HasMaxLength(200);
+        builder.Entity<Message>().Property(m => m.QuizId).IsRequired(false);
+        builder.Entity<Message>().Property(m => m.QuizTitle).HasMaxLength(200).IsRequired(false);
         builder.Entity<Message>().Property(m => m.SentAt).IsRequired();
     }
 }

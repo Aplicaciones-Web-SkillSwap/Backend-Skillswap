@@ -26,6 +26,8 @@ public static class MessageResourceFromEntityAssembler
             entity.Content,
             entity.FileUrl,
             entity.FileName,
+            entity.QuizId,
+            entity.QuizTitle,
             entity.SentAt);
     }
 }

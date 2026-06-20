@@ -25,6 +25,8 @@ public static class CreateMessageCommandFromResourceAssembler
             resource.SenderId,
             resource.Content,
             resource.FileUrl,
-            resource.FileName);
+            resource.FileName,
+            resource.QuizId,
+            resource.QuizTitle);
     }
 }
