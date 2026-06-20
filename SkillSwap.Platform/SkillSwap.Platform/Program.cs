@@ -5,6 +5,12 @@ using SkillSwap.Platform.Discovery.Application.Internal.QueryServices;
 using SkillSwap.Platform.Discovery.Application.QueryServices;
 using SkillSwap.Platform.Discovery.Domain.Repositories;
 using SkillSwap.Platform.Discovery.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using SkillSwap.Platform.Learning.Application.CommandServices;
+using SkillSwap.Platform.Learning.Application.Internal.CommandServices;
+using SkillSwap.Platform.Learning.Application.Internal.QueryServices;
+using SkillSwap.Platform.Learning.Application.QueryServices;
+using SkillSwap.Platform.Learning.Domain.Repositories;
+using SkillSwap.Platform.Learning.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using SkillSwap.Platform.Moderation.Application.CommandServices;
 using SkillSwap.Platform.Moderation.Application.Internal.CommandServices;
 using SkillSwap.Platform.Moderation.Application.Internal.QueryServices;
@@ -32,6 +38,7 @@ using SkillSwap.Platform.Payments.Application.Internal.QueryServices;
 using SkillSwap.Platform.Payments.Application.QueryServices;
 using SkillSwap.Platform.Payments.Domain.Repositories;
 using SkillSwap.Platform.Payments.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,6 +111,14 @@ builder.Services.AddScoped<ITransactionCommandService, TransactionCommandService
 builder.Services.AddScoped<IWalletQueryService, WalletQueryService>();
 builder.Services.AddScoped<ITransactionQueryService, TransactionQueryService>();
 builder.Services.AddScoped<IDonationCommandService, DonationCommandService>();
+
+// Learning Bounded Context
+builder.Services.AddScoped<IQuizCommandService, QuizCommandService>();
+builder.Services.AddScoped<IQuizQueryService, QuizQueryService>();
+builder.Services.AddScoped<IQuizRepository, QuizRepository>();
+builder.Services.AddScoped<IQuizAttemptRepository, QuizAttemptRepository>();
+builder.Services.AddScoped<IQuizAttemptCommandService, QuizAttemptCommandService>();
+builder.Services.AddScoped<IQuizAttemptQueryService, QuizAttemptQueryService>();
 
 var app = builder.Build();
 
