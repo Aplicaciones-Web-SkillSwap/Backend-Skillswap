@@ -5,5 +5,8 @@ public enum LearningError
     QuizNotFound,
     InternalServerError,
     DatabaseError,
-    InvalidQuestion
+    InvalidQuestion,
+    QuizAttemptNotFound,
+    InvalidAnswerCount,
+    OperationCancelled
 }

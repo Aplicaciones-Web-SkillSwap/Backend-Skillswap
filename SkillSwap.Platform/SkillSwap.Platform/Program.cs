@@ -39,6 +39,7 @@ using SkillSwap.Platform.Payments.Application.QueryServices;
 using SkillSwap.Platform.Payments.Domain.Repositories;
 using SkillSwap.Platform.Payments.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
@@ -115,6 +116,9 @@ builder.Services.AddScoped<IDonationCommandService, DonationCommandService>();
 builder.Services.AddScoped<IQuizCommandService, QuizCommandService>();
 builder.Services.AddScoped<IQuizQueryService, QuizQueryService>();
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();
+builder.Services.AddScoped<IQuizAttemptRepository, QuizAttemptRepository>();
+builder.Services.AddScoped<IQuizAttemptCommandService, QuizAttemptCommandService>();
+builder.Services.AddScoped<IQuizAttemptQueryService, QuizAttemptQueryService>();
 
 var app = builder.Build();
 
