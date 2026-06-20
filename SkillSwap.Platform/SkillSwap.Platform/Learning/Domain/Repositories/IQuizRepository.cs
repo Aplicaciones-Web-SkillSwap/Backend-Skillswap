@@ -8,10 +8,6 @@ namespace SkillSwap.Platform.Learning.Domain.Repositories;
 /// </summary>
 public interface IQuizRepository : IBaseRepository<Quiz>
 {
-    /// <summary>
-    ///     Find a quiz by tutor id
-    /// </summary>
-    Task<IEnumerable<Quiz>> FindByTutorIdAsync(int tutorId, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Find all quizzes related to a specific course name
