@@ -1,3 +1,4 @@
+using SkillSwap.Platform.Learning.Domain.Model.Commands;
 using SkillSwap.Platform.Learning.Domain.Model.ValueObjects;
 using TutorId = SkillSwap.Platform.Discovery.Domain.Model.ValueObjects.TutorId;
 
@@ -12,6 +13,18 @@ public partial class Quiz
         Title = string.Empty;
         Description = string.Empty;
         Questions = [];
+        Status = "draft";
+        CreatedAt = DateTime.UtcNow;
+    }
+    
+    // En tu clase Quiz.cs
+    public Quiz(CreateQuizCommand command)
+    {
+        Title = command.Title;
+        Course = command.Course;
+        Description = command.Description;
+        TutorId = new TutorId(command.TutorId);
+        Questions = new List<Question>();
         Status = "draft";
         CreatedAt = DateTime.UtcNow;
     }
@@ -60,8 +73,18 @@ public partial class Quiz
     {
         if (questionIndex < 0 || questionIndex >= this.Questions.Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(questionIndex), "Índice fuera de rango.");
+            throw new ArgumentOutOfRangeException(nameof(questionIndex), "Index out of range");
         }
         this.Questions.RemoveAt(questionIndex);
+    }
+    
+    public void UpdateQuestion(int index, string questionString, string[] answers, int correctAnswer)
+    {
+        if (index < 0 || index >= Questions.Count)
+        {
+            throw new ArgumentException("Invalid index");
+        }
+
+        Questions[index].UpdateInformation(questionString, answers, correctAnswer);
     }
 }
