@@ -30,6 +30,7 @@ using SkillSwap.Platform.Moderation.Application.QueryServices;
 using SkillSwap.Platform.Moderation.Domain.Repositories;
 using SkillSwap.Platform.Moderation.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using SkillSwap.Platform.Shared.Domain.Repositories;
+using SkillSwap.Platform.Shared.Infrastructure.OpenApi;
 using SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 using SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using SkillSwap.Platform.Workspace.Application.CommandServices;
@@ -88,20 +89,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "bearer",
         BearerFormat = "JWT"
     });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+    options.OperationFilter<AuthorizeCheckOperationFilter>();
 });
 
 // Database (MySQL)
