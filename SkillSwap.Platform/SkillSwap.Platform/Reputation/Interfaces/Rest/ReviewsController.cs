@@ -80,7 +80,7 @@ public class ReviewsController(
     }
 
     [HttpPost]
-    [Authorize(Roles = "Learner")]
+    [Authorize(Roles = "Student")]
     [SwaggerOperation("Create Review", "Create a new review for a tutor.", OperationId = "CreateReview")]
     [SwaggerResponse(201, "The review was created.", typeof(ReviewResource))]
     [SwaggerResponse(400, "The review was not created (invalid rating).")]

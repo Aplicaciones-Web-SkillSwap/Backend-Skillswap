@@ -43,4 +43,10 @@
     <data name="UserNotFound" xml:space="preserve">
         <value>The specified user was not found.</value>
     </data>
+    <data name="SelfSessionNotAllowed" xml:space="preserve">
+        <value>A user cannot request a tutoring session with themselves.</value>
+    </data>
+    <data name="SelfDonationNotAllowed" xml:space="preserve">
+        <value>A user cannot donate to themselves.</value>
+    </data>
 </root>

@@ -7,11 +7,12 @@ namespace SkillSwap.Platform.Iam.Domain.Model.Aggregates;
 ///     User aggregate root
 /// </summary>
 /// <remarks>
-///     This class represents a registered SkillSwap user (Learner, Tutor or Coordinator)
+///     This class represents a registered SkillSwap user. Student accounts are hybrid
+///     (act as both learner and tutor depending on context); Coordinator is a separate role.
 /// </remarks>
 public partial class User(string username, string email, string passwordHash, UserRole role)
 {
-    public User() : this(string.Empty, string.Empty, string.Empty, UserRole.Learner)
+    public User() : this(string.Empty, string.Empty, string.Empty, UserRole.Student)
     {
     }
 

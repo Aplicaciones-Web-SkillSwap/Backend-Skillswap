@@ -34,6 +34,10 @@ public class SessionCommandService(
     /// <inheritdoc />
     public async Task<Result<Session>> Handle(CreateSessionCommand command, CancellationToken cancellationToken)
     {
+        if (command.LearnerId == command.TutorId)
+            return Result<Session>.Failure(WorkspaceError.SelfSessionNotAllowed,
+                _localizer[nameof(WorkspaceError.SelfSessionNotAllowed)]);
+
         var session = new Session(command);
         try
         {

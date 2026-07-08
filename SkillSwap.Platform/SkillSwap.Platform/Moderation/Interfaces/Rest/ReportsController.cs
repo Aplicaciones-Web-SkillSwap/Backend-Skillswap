@@ -50,6 +50,7 @@ public class ReportsController(
     }
 
     [HttpPost]
+    [Authorize(Roles = "Student")]
     [SwaggerOperation("Create Report", "Create a new report.", OperationId = "CreateReport")]
     [SwaggerResponse(201, "The report was created.", typeof(ReportResource))]
     [SwaggerResponse(400, "The report was not created.")]

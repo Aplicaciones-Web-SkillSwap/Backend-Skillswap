@@ -49,7 +49,7 @@ public class AuthenticationController(
     public async Task<IActionResult> SignUp(SignUpResource resource, CancellationToken cancellationToken)
     {
         if (!Enum.TryParse<UserRole>(resource.Role, true, out var role))
-            return BadRequest(new { message = "Role must be one of: Learner, Tutor, Coordinator." });
+            return BadRequest(new { message = "Role must be one of: Student, Coordinator." });
 
         var signUpCommand = SignUpCommandFromResourceAssembler.ToCommandFromResource(resource, role);
         var result = await userCommandService.Handle(signUpCommand, cancellationToken);

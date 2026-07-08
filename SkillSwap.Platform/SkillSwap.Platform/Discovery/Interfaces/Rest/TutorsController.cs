@@ -89,7 +89,7 @@ public class TutorsController(
     }
 
     [HttpPost]
-    [Authorize(Roles = "Tutor")]
+    [Authorize(Roles = "Student")]
     [SwaggerOperation("Create Tutor", "Register a new tutor profile.", OperationId = "CreateTutor")]
     [SwaggerResponse(201, "The tutor was created.", typeof(TutorResource))]
     [SwaggerResponse(409, "A tutor profile already exists for this user.")]
@@ -109,7 +109,7 @@ public class TutorsController(
     }
 
     [HttpPut("{tutorId:int}")]
-    [Authorize(Roles = "Tutor")]
+    [Authorize(Roles = "Student")]
     [SwaggerOperation("Update Tutor", "Update an existing tutor profile.", OperationId = "UpdateTutor")]
     [SwaggerResponse(200, "The tutor was updated.", typeof(TutorResource))]
     [SwaggerResponse(404, "The tutor was not found.")]

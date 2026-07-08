@@ -9,6 +9,7 @@ public enum PaymentsError
     InvalidAmount,
     SenderWalletNotFound,
     ReceiverWalletNotFound,
+    SelfDonationNotAllowed,
     OperationCancelled,
     DatabaseError,
     InternalServerError

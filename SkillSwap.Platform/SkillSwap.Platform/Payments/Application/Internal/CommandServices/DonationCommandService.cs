@@ -46,6 +46,10 @@ public class DonationCommandService(
             return Result<DonationResult>.Failure(PaymentsError.InvalidAmount,
                 _localizer[nameof(PaymentsError.InvalidAmount)]);
 
+        if (command.FromUserId == command.ToUserId)
+            return Result<DonationResult>.Failure(PaymentsError.SelfDonationNotAllowed,
+                _localizer[nameof(PaymentsError.SelfDonationNotAllowed)]);
+
         var senderWallet = await walletRepository.FindByUserIdAsync(command.FromUserId, cancellationToken);
         if (senderWallet is null)
             return Result<DonationResult>.Failure(PaymentsError.SenderWalletNotFound,

@@ -78,7 +78,7 @@ public class WalletsController(
     }
 
     [HttpPost]
-    [Authorize(Roles = "Tutor")]
+    [Authorize(Roles = "Student")]
     [SwaggerOperation("Create Wallet", "Create a new wallet for a user.", OperationId = "CreateWallet")]
     [SwaggerResponse(201, "The wallet was created.", typeof(WalletResource))]
     [SwaggerResponse(409, "A wallet already exists for this user.")]

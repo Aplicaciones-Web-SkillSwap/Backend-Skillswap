@@ -6,6 +6,7 @@ public enum WorkspaceError
     SessionNotFound,
     MessageNotFound,
     InvalidSessionStatus,
+    SelfSessionNotAllowed,
     OperationCancelled,
     DatabaseError,
     InternalServerError

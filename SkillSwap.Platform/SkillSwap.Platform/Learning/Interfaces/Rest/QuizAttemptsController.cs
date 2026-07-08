@@ -30,7 +30,7 @@ public class QuizAttemptsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost("quiz/{quizId:int}")]
-    [Authorize(Roles = "Learner")]
+    [Authorize(Roles = "Student")]
     [SwaggerOperation("Submit Quiz Attempt", "Submit a learner's answers for a quiz and get the scored result.", OperationId = "SubmitQuizAttempt")]
     [SwaggerResponse(201, "The attempt was submitted and scored.", typeof(QuizAttemptResource))]
     [SwaggerResponse(400, "The number of answers does not match the number of questions.")]

@@ -74,7 +74,7 @@ public class TransactionsController(
     }
 
     [HttpPost("donate")]
-    [Authorize(Roles = "Learner")]
+    [Authorize(Roles = "Student")]
     [SwaggerOperation("Donate", "Make a donation from a student's wallet to a tutor's wallet, applying a 5% platform fee.", OperationId = "Donate")]
     [SwaggerResponse(200, "The donation was completed.", typeof(DonationResultResource))]
     [SwaggerResponse(400, "The donation was not completed (invalid amount or insufficient funds).")]

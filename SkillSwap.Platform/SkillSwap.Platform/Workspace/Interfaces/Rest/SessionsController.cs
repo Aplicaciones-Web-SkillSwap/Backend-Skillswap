@@ -81,7 +81,7 @@ public class SessionsController(
     }
 
     [HttpPost]
-    [Authorize(Roles = "Learner")]
+    [Authorize(Roles = "Student")]
     [SwaggerOperation("Create Session", "Create a new tutoring session.", OperationId = "CreateSession")]
     [SwaggerResponse(201, "The session was created.", typeof(SessionResource))]
     [SwaggerResponse(400, "The session was not created.")]
@@ -101,7 +101,7 @@ public class SessionsController(
     }
 
     [HttpPatch("{sessionId:int}/status")]
-    [Authorize(Roles = "Tutor")]
+    [Authorize(Roles = "Student")]
     [SwaggerOperation("Update Session Status", "Update the status of a tutoring session.", OperationId = "UpdateSessionStatus")]
     [SwaggerResponse(200, "The session status was updated.", typeof(SessionResource))]
     [SwaggerResponse(404, "The session was not found.")]
