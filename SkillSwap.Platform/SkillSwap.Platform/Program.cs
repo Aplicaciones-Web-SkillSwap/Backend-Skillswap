@@ -153,6 +153,14 @@ builder.Services.AddScoped<IQuizAttemptQueryService, QuizAttemptQueryService>();
 
 var app = builder.Build();
 
+// Apply pending migrations on startup (safe to call even when the schema is already up to date).
+// Needed because deployments (e.g. Render) don't have a shell to run `dotnet ef database update`.
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.Migrate();
+}
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
