@@ -28,4 +28,19 @@
     <data name="InvalidSanctionDuration" xml:space="preserve">
         <value>The sanction duration cannot be negative.</value>
     </data>
+    <data name="InvalidCredentials" xml:space="preserve">
+        <value>Invalid username or password.</value>
+    </data>
+    <data name="UsernameAlreadyTaken" xml:space="preserve">
+        <value>The specified username is already taken.</value>
+    </data>
+    <data name="EmailAlreadyTaken" xml:space="preserve">
+        <value>The specified email is already registered.</value>
+    </data>
+    <data name="InvalidInstitutionalEmail" xml:space="preserve">
+        <value>The email must be a valid institutional (.edu.pe) email address.</value>
+    </data>
+    <data name="UserNotFound" xml:space="preserve">
+        <value>The specified user was not found.</value>
+    </data>
 </root>

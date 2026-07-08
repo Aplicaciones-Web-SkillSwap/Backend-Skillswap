@@ -5,6 +5,7 @@ using SkillSwap.Platform.Moderation.Domain.Model.Commands;
 using SkillSwap.Platform.Moderation.Domain.Model.Queries;
 using SkillSwap.Platform.Moderation.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Moderation.Interfaces.Rest.Transform;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace SkillSwap.Platform.Moderation.Interfaces.Rest;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -29,6 +31,7 @@ public class ReportsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpGet("{reportId:int}")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Get Report by Id", "Get a report by its unique identifier.", OperationId = "GetReportById")]
     [SwaggerResponse(200, "The report was found and returned.", typeof(ReportResource))]
     [SwaggerResponse(404, "The report was not found.")]
@@ -67,6 +70,7 @@ public class ReportsController(
     }
 
     [HttpGet]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Get All Reports", "Get all reports.", OperationId = "GetAllReports")]
     [SwaggerResponse(200, "The reports were found and returned.", typeof(IEnumerable<ReportResource>))]
     public async Task<IActionResult> GetAllReports(CancellationToken cancellationToken)
@@ -78,6 +82,7 @@ public class ReportsController(
     }
 
     [HttpGet("reported-user/{reportedUserId:int}")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Get Reports By Reported User", "Get all reports targeting a specific reported user.",
         OperationId = "GetReportsByReportedUser")]
     [SwaggerResponse(200, "The reports were found and returned.", typeof(IEnumerable<ReportResource>))]
@@ -90,6 +95,7 @@ public class ReportsController(
     }
 
     [HttpPatch("{reportId:int}/close")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Close Report", "Marks a report as resolved and closed.", OperationId = "CloseReport")]
     [SwaggerResponse(200, "The report was closed.", typeof(ReportResource))]
     [SwaggerResponse(404, "The report was not found.")]

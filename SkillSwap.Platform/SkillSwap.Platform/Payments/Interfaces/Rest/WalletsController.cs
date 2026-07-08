@@ -7,12 +7,14 @@ using SkillSwap.Platform.Payments.Application.QueryServices;
 using SkillSwap.Platform.Payments.Domain.Model.Queries;
 using SkillSwap.Platform.Payments.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Payments.Interfaces.Rest.Transform;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace SkillSwap.Platform.Payments.Interfaces.Rest;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -76,6 +78,7 @@ public class WalletsController(
     }
 
     [HttpPost]
+    [Authorize(Roles = "Tutor")]
     [SwaggerOperation("Create Wallet", "Create a new wallet for a user.", OperationId = "CreateWallet")]
     [SwaggerResponse(201, "The wallet was created.", typeof(WalletResource))]
     [SwaggerResponse(409, "A wallet already exists for this user.")]

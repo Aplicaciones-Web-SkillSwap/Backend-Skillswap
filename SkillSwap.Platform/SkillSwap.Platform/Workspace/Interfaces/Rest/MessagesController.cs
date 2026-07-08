@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Localization;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using SkillSwap.Platform.Workspace.Application.CommandServices;
@@ -16,6 +17,7 @@ using SkillSwap.Platform.Workspace.Domain.Model.Queries;
 
 namespace SkillSwap.Platform.Workspace.Interfaces.Rest;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]

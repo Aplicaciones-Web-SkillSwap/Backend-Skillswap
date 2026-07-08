@@ -7,12 +7,14 @@ using SkillSwap.Platform.Learning.Application.QueryServices;
 using SkillSwap.Platform.Learning.Domain.Model.Queries;
 using SkillSwap.Platform.Learning.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Learning.Interfaces.Rest.Transform;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace SkillSwap.Platform.Learning.Interfaces.Rest;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -28,6 +30,7 @@ public class QuizAttemptsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost("quiz/{quizId:int}")]
+    [Authorize(Roles = "Learner")]
     [SwaggerOperation("Submit Quiz Attempt", "Submit a learner's answers for a quiz and get the scored result.", OperationId = "SubmitQuizAttempt")]
     [SwaggerResponse(201, "The attempt was submitted and scored.", typeof(QuizAttemptResource))]
     [SwaggerResponse(400, "The number of answers does not match the number of questions.")]

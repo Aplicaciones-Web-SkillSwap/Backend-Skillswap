@@ -7,12 +7,14 @@ using SkillSwap.Platform.Reputation.Application.QueryServices;
 using SkillSwap.Platform.Reputation.Domain.Model.Queries;
 using SkillSwap.Platform.Reputation.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Reputation.Interfaces.Rest.Transform;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace SkillSwap.Platform.Reputation.Interfaces.Rest;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -78,6 +80,7 @@ public class ReviewsController(
     }
 
     [HttpPost]
+    [Authorize(Roles = "Learner")]
     [SwaggerOperation("Create Review", "Create a new review for a tutor.", OperationId = "CreateReview")]
     [SwaggerResponse(201, "The review was created.", typeof(ReviewResource))]
     [SwaggerResponse(400, "The review was not created (invalid rating).")]

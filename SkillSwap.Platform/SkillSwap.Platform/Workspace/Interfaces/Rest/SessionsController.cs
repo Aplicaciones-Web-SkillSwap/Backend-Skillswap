@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Localization;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using SkillSwap.Platform.Workspace.Application.CommandServices;
@@ -13,6 +14,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace SkillSwap.Platform.Workspace.Interfaces.Rest;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -79,6 +81,7 @@ public class SessionsController(
     }
 
     [HttpPost]
+    [Authorize(Roles = "Learner")]
     [SwaggerOperation("Create Session", "Create a new tutoring session.", OperationId = "CreateSession")]
     [SwaggerResponse(201, "The session was created.", typeof(SessionResource))]
     [SwaggerResponse(400, "The session was not created.")]
@@ -98,6 +101,7 @@ public class SessionsController(
     }
 
     [HttpPatch("{sessionId:int}/status")]
+    [Authorize(Roles = "Tutor")]
     [SwaggerOperation("Update Session Status", "Update the status of a tutoring session.", OperationId = "UpdateSessionStatus")]
     [SwaggerResponse(200, "The session status was updated.", typeof(SessionResource))]
     [SwaggerResponse(404, "The session was not found.")]

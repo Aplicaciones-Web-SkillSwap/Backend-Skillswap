@@ -10,12 +10,14 @@ using SkillSwap.Platform.Learning.Domain.Model.Queries;
 using SkillSwap.Platform.Learning.Domain.Model.ValueObjects;
 using SkillSwap.Platform.Learning.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Learning.Interfaces.Rest.Transform;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace SkillSwap.Platform.Learning.Interfaces.Rest;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -44,6 +46,7 @@ public class QuizzesController(
     }
 
     [HttpPost]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Create Quiz", "Register a new quiz.", OperationId = "CreateQuiz")]
     [SwaggerResponse(201, "The quiz was created.", typeof(QuizResource))]
     public async Task<IActionResult> CreateQuiz(CreateQuizResource resource, CancellationToken cancellationToken)
@@ -62,6 +65,7 @@ public class QuizzesController(
     }
 
     [HttpPost("{quizId:int}/questions")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Add Question", "Add a new question to a quiz.", OperationId = "AddQuestion")]
     public async Task<IActionResult> AddQuestion(int quizId, AddQuestionResource resource, CancellationToken cancellationToken)
     {
@@ -82,6 +86,7 @@ public class QuizzesController(
     }
 
     [HttpDelete("{quizId:int}")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Delete Quiz", "Delete an existing quiz.", OperationId = "DeleteQuiz")]
     public async Task<IActionResult> DeleteQuiz(int quizId, CancellationToken cancellationToken)
     {
@@ -92,6 +97,7 @@ public class QuizzesController(
     }
     
     [HttpDelete("{quizId:int}/questions/{questionId:int}")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Remove Question", "Removes a question from a specific quiz.", OperationId = "RemoveQuestionFromQuiz")]
     [SwaggerResponse(204, "The question was removed.")]
     [SwaggerResponse(404, "The quiz or question was not found.")]
@@ -110,6 +116,7 @@ public class QuizzesController(
     }
     
     [HttpPut("{quizId:int}")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Update Quiz", "Update an existing quiz's basic information.", OperationId = "UpdateQuiz")]
     [SwaggerResponse(200, "The quiz was updated.", typeof(QuizResource))]
     [SwaggerResponse(404, "The quiz was not found.")]
@@ -129,6 +136,7 @@ public class QuizzesController(
     }
     
     [HttpPut("{quizId:int}/questions/{questionId:int}")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Update Question", "Update details of a specific question in a quiz.", OperationId = "UpdateQuestion")]
     [SwaggerResponse(200, "The question was updated.", typeof(QuestionResource))]
     [SwaggerResponse(404, "The quiz or question was not found.")]

@@ -7,12 +7,14 @@ using SkillSwap.Platform.Payments.Application.QueryServices;
 using SkillSwap.Platform.Payments.Domain.Model.Queries;
 using SkillSwap.Platform.Payments.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Payments.Interfaces.Rest.Transform;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace SkillSwap.Platform.Payments.Interfaces.Rest;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -72,6 +74,7 @@ public class TransactionsController(
     }
 
     [HttpPost("donate")]
+    [Authorize(Roles = "Learner")]
     [SwaggerOperation("Donate", "Make a donation from a student's wallet to a tutor's wallet, applying a 5% platform fee.", OperationId = "Donate")]
     [SwaggerResponse(200, "The donation was completed.", typeof(DonationResultResource))]
     [SwaggerResponse(400, "The donation was not completed (invalid amount or insufficient funds).")]

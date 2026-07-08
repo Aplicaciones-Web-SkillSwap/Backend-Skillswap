@@ -1,4 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using SkillSwap.Platform.Iam.Application.CommandServices;
+using SkillSwap.Platform.Iam.Application.Internal.CommandServices;
+using SkillSwap.Platform.Iam.Application.Internal.OutboundServices;
+using SkillSwap.Platform.Iam.Application.Internal.QueryServices;
+using SkillSwap.Platform.Iam.Application.QueryServices;
+using SkillSwap.Platform.Iam.Domain.Repositories;
+using SkillSwap.Platform.Iam.Infrastructure.Hashing.BCrypt.Services;
+using SkillSwap.Platform.Iam.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Extensions;
+using SkillSwap.Platform.Iam.Infrastructure.Tokens.Jwt.Configuration;
+using SkillSwap.Platform.Iam.Infrastructure.Tokens.Jwt.Services;
 using SkillSwap.Platform.Discovery.Application.CommandServices;
 using SkillSwap.Platform.Discovery.Application.Internal.CommandServices;
 using SkillSwap.Platform.Discovery.Application.Internal.QueryServices;
@@ -77,6 +88,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Shared
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// Iam Bounded Context
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+
 // Moderation Bounded Context
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 builder.Services.AddScoped<ISanctionRepository, SanctionRepository>();
@@ -128,6 +147,8 @@ app.UseSwaggerUI();
 app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
+
+app.UseRequestAuthorization();
 
 app.UseAuthorization();
 

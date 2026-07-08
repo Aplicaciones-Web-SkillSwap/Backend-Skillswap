@@ -4,6 +4,7 @@ using SkillSwap.Platform.Moderation.Application.QueryServices;
 using SkillSwap.Platform.Moderation.Domain.Model.Queries;
 using SkillSwap.Platform.Moderation.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Moderation.Interfaces.Rest.Transform;
+using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace SkillSwap.Platform.Moderation.Interfaces.Rest;
 
+[Authorize(Roles = "Coordinator")]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
