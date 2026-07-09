@@ -19,13 +19,13 @@ public static class CreateReportCommandFromResourceAssembler
     ///     A new <see cref="CreateReportCommand" /> instance.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if the input <paramref name="resource" /> is null.</exception>
-    public static CreateReportCommand ToCommandFromResource(CreateReportResource resource)
+    public static CreateReportCommand ToCommandFromResource(CreateReportResource resource, int reporterUserId)
     {
         if (resource == null)
             throw new ArgumentNullException(nameof(resource),
                 "CreateReportResource cannot be null when converting to command.");
         return new CreateReportCommand(
-            resource.ReporterUserId,
+            reporterUserId,
             resource.ReportedUserId,
             resource.SessionId,
             resource.Reason

@@ -18,11 +18,15 @@ public static class UpdateSessionStatusCommandFromResourceAssembler
     /// <param name="resource">
     ///     The <see cref="UpdateSessionStatusResource" /> containing the updated status.
     /// </param>
+    /// <param name="actorUserId">
+    ///     The authenticated caller's user id.
+    /// </param>
     /// <returns>
     ///     A new <see cref="UpdateSessionStatusCommand" /> instance.
     /// </returns>
-    public static UpdateSessionStatusCommand ToCommandFromResource(int sessionId, UpdateSessionStatusResource resource)
+    public static UpdateSessionStatusCommand ToCommandFromResource(int sessionId, UpdateSessionStatusResource resource,
+        int actorUserId)
     {
-        return new UpdateSessionStatusCommand(sessionId, resource.Status);
+        return new UpdateSessionStatusCommand(sessionId, resource.Status, actorUserId);
     }
 }

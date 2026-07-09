@@ -19,6 +19,8 @@ public static class LearningActionResultAssembler
             LearningError.InvalidQuestion => StatusCodes.Status400BadRequest,
             LearningError.QuizAttemptNotFound => StatusCodes.Status404NotFound,
             LearningError.InvalidAnswerCount => StatusCodes.Status400BadRequest,
+            LearningError.SessionNotFound => StatusCodes.Status404NotFound,
+            LearningError.LearnerNotSessionParticipant => StatusCodes.Status403Forbidden,
             LearningError.OperationCancelled => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status400BadRequest
         };
