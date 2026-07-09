@@ -2,11 +2,14 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Localization;
+using SkillSwap.Platform.Iam.Application.CommandServices;
 using SkillSwap.Platform.Iam.Application.QueryServices;
+using SkillSwap.Platform.Iam.Domain.Model.Commands;
 using SkillSwap.Platform.Iam.Domain.Model.Queries;
 using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using SkillSwap.Platform.Iam.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Iam.Interfaces.Rest.Transform;
+using SkillSwap.Platform.Shared.Interfaces.Rest;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -19,6 +22,7 @@ namespace SkillSwap.Platform.Iam.Interfaces.Rest;
 [SwaggerTag("Available User Endpoints.")]
 public class UsersController(
     IUserQueryService userQueryService,
+    IUserCommandService userCommandService,
     IStringLocalizer<ErrorMessage> errorLocalizer,
     ProblemDetailsFactory problemDetailsFactory)
     : ControllerBase
@@ -50,5 +54,24 @@ public class UsersController(
         var users = await userQueryService.Handle(getAllUsersQuery, cancellationToken);
         var userResources = users.Select(UserResourceFromEntityAssembler.ToResourceFromEntity);
         return Ok(userResources);
+    }
+
+    [HttpPatch("{id:int}/bio")]
+    [SwaggerOperation("Update User Bio", "Update the authenticated user's learner bio.", OperationId = "UpdateUserBio")]
+    [SwaggerResponse(200, "The bio was updated.", typeof(UserResource))]
+    [SwaggerResponse(403, "The authenticated user is not the owner of this profile.")]
+    [SwaggerResponse(404, "The user was not found.")]
+    public async Task<IActionResult> UpdateUserBio(int id, UpdateUserBioResource resource,
+        CancellationToken cancellationToken)
+    {
+        var updateUserBioCommand = new UpdateUserBioCommand(id, resource.Bio, this.CurrentUserId());
+        var result = await userCommandService.Handle(updateUserBioCommand, cancellationToken);
+
+        return IamActionResultAssembler.ToActionResultFromUpdateUserBioResult(
+            this,
+            result,
+            problemDetailsFactory,
+            updatedUser => Ok(UserResourceFromEntityAssembler.ToResourceFromEntity(updatedUser))
+        );
     }
 }

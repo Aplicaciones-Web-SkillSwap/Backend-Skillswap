@@ -40,6 +40,7 @@ public static class ModelBuilderExtensions
         builder.Entity<Tutor>().Property(t => t.ReviewCount).IsRequired();
         builder.Entity<Tutor>().Property(t => t.Verified).IsRequired();
         builder.Entity<Tutor>().Property(t => t.Online).IsRequired();
+        builder.Entity<Tutor>().Property(t => t.Visible).IsRequired().HasDefaultValue(true);
         builder.Entity<Tutor>().Property(t => t.ExperienceYears).IsRequired();
     }
 }

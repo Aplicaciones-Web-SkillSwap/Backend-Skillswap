@@ -18,9 +18,17 @@ namespace SkillSwap.Platform.Discovery.Domain.Model.Commands;
 /// <param name="MainSubject">
 ///     The updated main subject the tutor teaches
 /// </param>
+/// <param name="ActorUserId">
+///     The identifier of the authenticated user performing the update, derived from the JWT.
+/// </param>
+/// <param name="Visible">
+///     Whether the tutor profile should be visible in search results.
+/// </param>
 public record UpdateTutorCommand(
     int TutorId,
     string Bio,
     IList<string> Skills,
     string AvatarUrl,
-    string MainSubject);
+    string MainSubject,
+    int ActorUserId,
+    bool Visible);

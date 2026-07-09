@@ -15,6 +15,7 @@ public static class ModelBuilderExtensions
         builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
         builder.Entity<User>().Property(u => u.Role).IsRequired().HasConversion<string>().HasMaxLength(20);
         builder.Entity<User>().Property(u => u.IsVerified).IsRequired();
+        builder.Entity<User>().Property(u => u.Bio).IsRequired().HasMaxLength(1000);
         builder.Entity<User>().HasIndex(u => u.Username).IsUnique();
         builder.Entity<User>().HasIndex(u => u.Email).IsUnique();
     }

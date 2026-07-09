@@ -24,4 +24,12 @@ public interface IUserCommandService
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The <see cref="Result{T}" /> wrapping the authenticated user and its JWT</returns>
     Task<Result<(User User, string Token)>> Handle(SignInCommand command, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Handle update user bio command
+    /// </summary>
+    /// <param name="command">The <see cref="UpdateUserBioCommand" /> command</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The <see cref="Result{T}" /> wrapping the updated user</returns>
+    Task<Result<User>> Handle(UpdateUserBioCommand command, CancellationToken cancellationToken);
 }

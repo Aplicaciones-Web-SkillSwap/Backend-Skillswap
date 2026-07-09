@@ -24,6 +24,7 @@ public partial class User(string username, string email, string passwordHash, Us
 
     public UserRole Role { get; private set; } = role;
     public bool IsVerified { get; private set; }
+    public string Bio { get; private set; } = string.Empty;
 
     /// <summary>
     ///     Update the password hash
@@ -33,6 +34,17 @@ public partial class User(string username, string email, string passwordHash, Us
     public User UpdatePasswordHash(string passwordHash)
     {
         PasswordHash = passwordHash;
+        return this;
+    }
+
+    /// <summary>
+    ///     Update the user's learner bio
+    /// </summary>
+    /// <param name="bio">The new bio text</param>
+    /// <returns>The updated user</returns>
+    public User UpdateBio(string bio)
+    {
+        Bio = bio;
         return this;
     }
 

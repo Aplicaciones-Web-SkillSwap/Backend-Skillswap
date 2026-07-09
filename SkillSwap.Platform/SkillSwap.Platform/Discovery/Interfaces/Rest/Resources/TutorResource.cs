@@ -45,6 +45,9 @@ namespace SkillSwap.Platform.Discovery.Interfaces.Rest.Resources;
 /// <param name="Online">
 ///     Whether the tutor is currently online
 /// </param>
+/// <param name="Visible">
+///     Whether the tutor profile is visible in search results
+/// </param>
 public record TutorResource(
     int Id,
     int UserId,
@@ -59,4 +62,5 @@ public record TutorResource(
     double Rating,
     int ReviewCount,
     bool Verified,
-    bool Online);
+    bool Online,
+    bool Visible);
