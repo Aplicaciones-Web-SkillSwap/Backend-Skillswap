@@ -18,9 +18,14 @@ namespace SkillSwap.Platform.Workspace.Domain.Model.Commands;
 /// <param name="CourseId">
 ///     The unique identifier of the course the session is related to
 /// </param>
+/// <param name="InitialMessage">
+///     An optional note from the learner explaining the request, shown to the tutor before they
+///     accept or reject the session.
+/// </param>
 public record CreateSessionCommand(
     int LearnerId,
     int TutorId,
     string Topic,
     DateTime ScheduledAt,
-    int CourseId);
+    int CourseId,
+    string InitialMessage);
