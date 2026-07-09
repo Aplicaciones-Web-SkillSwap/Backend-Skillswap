@@ -5,6 +5,7 @@ public enum DiscoveryError
     None,
     TutorNotFound,
     TutorAlreadyExists,
+    NotTutorOwner,
     OperationCancelled,
     DatabaseError,
     InternalServerError
