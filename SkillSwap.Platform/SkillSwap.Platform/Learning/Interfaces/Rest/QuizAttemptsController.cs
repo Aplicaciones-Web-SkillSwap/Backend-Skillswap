@@ -8,6 +8,7 @@ using SkillSwap.Platform.Learning.Domain.Model.Queries;
 using SkillSwap.Platform.Learning.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Learning.Interfaces.Rest.Transform;
 using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+using SkillSwap.Platform.Shared.Interfaces.Rest;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
@@ -38,7 +39,7 @@ public class QuizAttemptsController(
     public async Task<IActionResult> SubmitQuizAttempt(int quizId, SubmitQuizAttemptResource resource,
         CancellationToken cancellationToken)
     {
-        var command = SubmitQuizAttemptCommandFromResourceAssembler.ToCommandFromResource(quizId, resource);
+        var command = SubmitQuizAttemptCommandFromResourceAssembler.ToCommandFromResource(quizId, resource, this.CurrentUserId());
         var result = await quizAttemptCommandService.Handle(command, cancellationToken);
 
         return LearningActionResultAssembler.ToActionResultFromQuizResult(

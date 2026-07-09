@@ -10,6 +10,7 @@ public enum PaymentsError
     SenderWalletNotFound,
     ReceiverWalletNotFound,
     SelfDonationNotAllowed,
+    NoCompletedSessionWithTutor,
     OperationCancelled,
     DatabaseError,
     InternalServerError

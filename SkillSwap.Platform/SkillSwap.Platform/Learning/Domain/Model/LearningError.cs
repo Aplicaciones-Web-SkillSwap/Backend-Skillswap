@@ -8,5 +8,7 @@ public enum LearningError
     InvalidQuestion,
     QuizAttemptNotFound,
     InvalidAnswerCount,
+    SessionNotFound,
+    LearnerNotSessionParticipant,
     OperationCancelled
 }

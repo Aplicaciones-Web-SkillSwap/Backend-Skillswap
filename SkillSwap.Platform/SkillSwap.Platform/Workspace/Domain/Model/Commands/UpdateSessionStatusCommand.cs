@@ -9,6 +9,10 @@ namespace SkillSwap.Platform.Workspace.Domain.Model.Commands;
 /// <param name="Status">
 ///     The new status of the session
 /// </param>
+/// <param name="ActorUserId">
+///     The authenticated user requesting the status change
+/// </param>
 public record UpdateSessionStatusCommand(
     int SessionId,
-    string Status);
+    string Status,
+    int ActorUserId);

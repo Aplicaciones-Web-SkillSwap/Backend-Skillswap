@@ -22,6 +22,8 @@ public static class PaymentsActionResultAssembler
             PaymentsError.InvalidAmount => StatusCodes.Status400BadRequest,
             PaymentsError.SenderWalletNotFound => StatusCodes.Status404NotFound,
             PaymentsError.ReceiverWalletNotFound => StatusCodes.Status404NotFound,
+            PaymentsError.SelfDonationNotAllowed => StatusCodes.Status400BadRequest,
+            PaymentsError.NoCompletedSessionWithTutor => StatusCodes.Status400BadRequest,
             PaymentsError.OperationCancelled => StatusCodes.Status409Conflict,
             PaymentsError.DatabaseError => StatusCodes.Status500InternalServerError,
             PaymentsError.InternalServerError => StatusCodes.Status500InternalServerError,

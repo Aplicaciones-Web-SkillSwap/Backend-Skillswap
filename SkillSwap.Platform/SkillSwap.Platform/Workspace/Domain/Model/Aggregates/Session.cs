@@ -42,6 +42,7 @@ public partial class Session
 
     public bool IsPending => Status == "pending";
     public bool IsScheduled => Status == "scheduled";
+    public bool IsCompleted => Status == "completed";
 
     public void UpdateStatus(UpdateSessionStatusCommand command)
     {

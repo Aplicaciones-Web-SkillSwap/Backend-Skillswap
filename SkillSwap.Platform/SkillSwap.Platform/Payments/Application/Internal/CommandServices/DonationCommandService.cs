@@ -7,6 +7,7 @@ using SkillSwap.Platform.Payments.Domain.Repositories;
 using SkillSwap.Platform.Shared.Application.Model;
 using SkillSwap.Platform.Shared.Domain.Repositories;
 using SkillSwap.Platform.Shared.Resources.Errors;
+using SkillSwap.Platform.Workspace.Domain.Repositories;
 
 namespace SkillSwap.Platform.Payments.Application.Internal.CommandServices;
 
@@ -23,6 +24,9 @@ namespace SkillSwap.Platform.Payments.Application.Internal.CommandServices;
 /// <param name="transactionRepository">
 ///     Transaction repository
 /// </param>
+/// <param name="sessionRepository">
+///     Session repository
+/// </param>
 /// <param name="unitOfWork">
 ///     Unit of work
 /// </param>
@@ -32,6 +36,7 @@ namespace SkillSwap.Platform.Payments.Application.Internal.CommandServices;
 public class DonationCommandService(
     IWalletRepository walletRepository,
     ITransactionRepository transactionRepository,
+    ISessionRepository sessionRepository,
     IUnitOfWork unitOfWork,
     IStringLocalizer<ErrorMessage> localizer)
     : IDonationCommandService
@@ -49,6 +54,13 @@ public class DonationCommandService(
         if (command.FromUserId == command.ToUserId)
             return Result<DonationResult>.Failure(PaymentsError.SelfDonationNotAllowed,
                 _localizer[nameof(PaymentsError.SelfDonationNotAllowed)]);
+
+        var learnerSessions = await sessionRepository.FindByLearnerIdAsync(command.FromUserId, cancellationToken);
+        var hasCompletedSessionWithTutor = learnerSessions.Any(s =>
+            s.SessionTutorId.UserId == command.ToUserId && s.IsCompleted);
+        if (!hasCompletedSessionWithTutor)
+            return Result<DonationResult>.Failure(PaymentsError.NoCompletedSessionWithTutor,
+                _localizer[nameof(PaymentsError.NoCompletedSessionWithTutor)]);
 
         var senderWallet = await walletRepository.FindByUserIdAsync(command.FromUserId, cancellationToken);
         if (senderWallet is null)

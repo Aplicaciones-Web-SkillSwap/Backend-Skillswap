@@ -6,6 +6,7 @@ using SkillSwap.Platform.Moderation.Domain.Model.Queries;
 using SkillSwap.Platform.Moderation.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Moderation.Interfaces.Rest.Transform;
 using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+using SkillSwap.Platform.Shared.Interfaces.Rest;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Microsoft.AspNetCore.Mvc;
@@ -57,7 +58,7 @@ public class ReportsController(
     [SwaggerResponse(409, "A pending report already exists between these users.")]
     public async Task<IActionResult> CreateReport(CreateReportResource resource, CancellationToken cancellationToken)
     {
-        var createReportCommand = CreateReportCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var createReportCommand = CreateReportCommandFromResourceAssembler.ToCommandFromResource(resource, this.CurrentUserId());
         var result = await reportCommandService.Handle(createReportCommand, cancellationToken);
 
         return ModerationActionResultAssembler.ToActionResultFromCreateReportResult(

@@ -6,6 +6,10 @@ public enum ReputationError
     ReviewNotFound,
     InvalidRating,
     DuplicateReview,
+    SessionNotFound,
+    SessionNotCompleted,
+    ReviewerNotSessionLearner,
+    TutorMismatch,
     OperationCancelled,
     DatabaseError,
     InternalServerError

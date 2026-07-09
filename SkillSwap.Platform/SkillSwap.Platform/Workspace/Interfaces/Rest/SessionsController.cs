@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Localization;
 using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+using SkillSwap.Platform.Shared.Interfaces.Rest;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using SkillSwap.Platform.Workspace.Application.CommandServices;
@@ -109,7 +110,7 @@ public class SessionsController(
         CancellationToken cancellationToken)
     {
         var updateSessionStatusCommand =
-            UpdateSessionStatusCommandFromResourceAssembler.ToCommandFromResource(sessionId, resource);
+            UpdateSessionStatusCommandFromResourceAssembler.ToCommandFromResource(sessionId, resource, this.CurrentUserId());
         var result = await sessionCommandService.Handle(updateSessionStatusCommand, cancellationToken);
 
         return WorkspaceActionResultAssembler.ToActionResultFromUpdateSessionStatusResult(
@@ -129,7 +130,7 @@ public class SessionsController(
         CancellationToken cancellationToken)
     {
         var updateSessionStatusCommand =
-            UpdateSessionStatusCommandFromResourceAssembler.ToCommandFromResource(sessionId, resource);
+            UpdateSessionStatusCommandFromResourceAssembler.ToCommandFromResource(sessionId, resource, this.CurrentUserId());
         var result = await sessionCommandService.Handle(updateSessionStatusCommand, cancellationToken);
 
         return WorkspaceActionResultAssembler.ToActionResultFromUpdateSessionStatusResult(
