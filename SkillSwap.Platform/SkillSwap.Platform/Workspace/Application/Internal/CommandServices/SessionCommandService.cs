@@ -89,6 +89,9 @@ public class SessionCommandService(
             ("pending", "cancelled")   => isTutor || isLearner,
             ("scheduled", "cancelled") => isTutor || isLearner,
             ("scheduled", "completed") => isTutor || isLearner,
+            ("scheduled", "in_progress")   => isTutor || isLearner,
+            ("in_progress", "completed")   => isTutor || isLearner,
+            ("in_progress", "cancelled")   => isTutor || isLearner,
             _ => false
         };
         if (!transitionAllowed)
