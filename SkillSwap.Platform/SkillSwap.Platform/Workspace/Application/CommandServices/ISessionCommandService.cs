@@ -32,4 +32,16 @@ public interface ISessionCommandService
     ///     The <see cref="Result{T}" /> wrapping the updated <see cref="Session" />
     /// </returns>
     Task<Result<Session>> Handle(UpdateSessionStatusCommand command, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Handle reschedule session command
+    /// </summary>
+    /// <param name="command">
+    ///     The <see cref="RescheduleSessionCommand" /> command
+    /// </param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>
+    ///     The <see cref="Result{T}" /> wrapping the rescheduled <see cref="Session" />
+    /// </returns>
+    Task<Result<Session>> Handle(RescheduleSessionCommand command, CancellationToken cancellationToken);
 }
