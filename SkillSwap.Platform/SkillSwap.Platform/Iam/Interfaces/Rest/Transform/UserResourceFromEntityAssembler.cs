@@ -10,6 +10,6 @@ public static class UserResourceFromEntityAssembler
 {
     public static UserResource ToResourceFromEntity(User entity)
     {
-        return new UserResource(entity.Id, entity.Username, entity.Email, entity.Role.ToString(), entity.IsVerified);
+        return new UserResource(entity.Id, entity.Username, entity.Email, entity.Role.ToString(), entity.IsVerified, entity.Bio);
     }
 }
