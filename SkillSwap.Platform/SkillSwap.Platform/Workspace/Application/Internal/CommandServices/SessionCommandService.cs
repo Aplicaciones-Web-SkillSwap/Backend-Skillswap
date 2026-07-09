@@ -38,6 +38,11 @@ public class SessionCommandService(
             return Result<Session>.Failure(WorkspaceError.SelfSessionNotAllowed,
                 _localizer[nameof(WorkspaceError.SelfSessionNotAllowed)]);
 
+        var learnerSessions = await sessionRepository.FindByLearnerIdAsync(command.LearnerId, cancellationToken);
+        if (learnerSessions.Any(s => s.SessionTutorId.UserId == command.TutorId && s.IsPending))
+            return Result<Session>.Failure(WorkspaceError.PendingSessionAlreadyExists,
+                _localizer[nameof(WorkspaceError.PendingSessionAlreadyExists)]);
+
         var session = new Session(command);
         try
         {

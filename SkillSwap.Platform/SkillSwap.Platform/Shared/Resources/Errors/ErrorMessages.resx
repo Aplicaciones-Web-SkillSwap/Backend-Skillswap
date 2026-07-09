@@ -46,6 +46,9 @@
     <data name="SelfSessionNotAllowed" xml:space="preserve">
         <value>A user cannot request a tutoring session with themselves.</value>
     </data>
+    <data name="PendingSessionAlreadyExists" xml:space="preserve">
+        <value>You already have a pending tutoring request with this tutor.</value>
+    </data>
     <data name="SelfDonationNotAllowed" xml:space="preserve">
         <value>A user cannot donate to themselves.</value>
     </data>
