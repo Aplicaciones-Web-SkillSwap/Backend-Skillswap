@@ -8,6 +8,7 @@ public enum IamError
     EmailAlreadyTaken,
     InvalidInstitutionalEmail,
     UserNotFound,
+    NotProfileOwner,
     OperationCancelled,
     DatabaseError,
     InternalServerError

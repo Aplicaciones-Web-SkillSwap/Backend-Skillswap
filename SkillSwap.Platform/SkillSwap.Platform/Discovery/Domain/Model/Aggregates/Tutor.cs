@@ -27,6 +27,7 @@ public partial class Tutor
         ReviewCount = 0;
         Verified = false;
         Online = false;
+        Visible = true;
     }
 
     public Tutor(CreateTutorCommand command)
@@ -44,6 +45,7 @@ public partial class Tutor
         ReviewCount = 0;
         Verified = false;
         Online = false;
+        Visible = true;
     }
 
     public int Id { get; private set; }
@@ -60,6 +62,7 @@ public partial class Tutor
     public int ReviewCount { get; private set; }
     public bool Verified { get; private set; }
     public bool Online { get; private set; }
+    public bool Visible { get; private set; }
 
     public void Update(UpdateTutorCommand command)
     {
@@ -67,5 +70,6 @@ public partial class Tutor
         TutorSkills = new TutorSkills(command.Skills);
         AvatarUrl = command.AvatarUrl;
         MainSubject = command.MainSubject;
+        Visible = command.Visible;
     }
 }

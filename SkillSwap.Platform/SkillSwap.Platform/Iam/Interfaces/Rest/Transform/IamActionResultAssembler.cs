@@ -21,6 +21,7 @@ public static class IamActionResultAssembler
             IamError.EmailAlreadyTaken => StatusCodes.Status409Conflict,
             IamError.InvalidInstitutionalEmail => StatusCodes.Status400BadRequest,
             IamError.UserNotFound => StatusCodes.Status404NotFound,
+            IamError.NotProfileOwner => StatusCodes.Status403Forbidden,
             IamError.OperationCancelled => StatusCodes.Status409Conflict,
             IamError.DatabaseError => StatusCodes.Status500InternalServerError,
             IamError.InternalServerError => StatusCodes.Status500InternalServerError,
@@ -67,5 +68,17 @@ public static class IamActionResultAssembler
                 errorLocalizer[nameof(IamError.UserNotFound)]
             );
         return successAction(user);
+    }
+
+    public static IActionResult ToActionResultFromUpdateUserBioResult(
+        ControllerBase controller,
+        Result<User> result,
+        ProblemDetailsFactory problemDetailsFactory,
+        Func<User, IActionResult> successAction)
+    {
+        if (result.IsSuccess) return successAction(result.Value!);
+
+        var statusCode = ToStatusCodeFromIamError((IamError)result.Error!);
+        return problemDetailsFactory.CreateProblemDetails(controller, statusCode, result.Error, result.Message);
     }
 }

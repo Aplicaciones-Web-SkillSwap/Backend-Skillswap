@@ -33,6 +33,7 @@ public static class TutorResourceFromEntityAssembler
             entity.Rating,
             entity.ReviewCount,
             entity.Verified,
-            entity.Online);
+            entity.Online,
+            entity.Visible);
     }
 }

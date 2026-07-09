@@ -80,6 +80,37 @@ public partial class UserCommandService(
         return Result<(User User, string Token)>.Success((user, token));
     }
 
+    /// <inheritdoc />
+    public async Task<Result<User>> Handle(UpdateUserBioCommand command, CancellationToken cancellationToken)
+    {
+        var user = await userRepository.FindByIdAsync(command.UserId, cancellationToken);
+        if (user is null)
+            return Result<User>.Failure(IamError.UserNotFound, _localizer[nameof(IamError.UserNotFound)]);
+
+        if (user.Id != command.ActorUserId)
+            return Result<User>.Failure(IamError.NotProfileOwner, _localizer[nameof(IamError.NotProfileOwner)]);
+
+        user.UpdateBio(command.Bio);
+        try
+        {
+            userRepository.Update(user);
+            await unitOfWork.CompleteAsync(cancellationToken);
+            return Result<User>.Success(user);
+        }
+        catch (OperationCanceledException)
+        {
+            return Result<User>.Failure(IamError.OperationCancelled, _localizer[nameof(IamError.OperationCancelled)]);
+        }
+        catch (DbUpdateException)
+        {
+            return Result<User>.Failure(IamError.DatabaseError, _localizer[nameof(IamError.DatabaseError)]);
+        }
+        catch (Exception)
+        {
+            return Result<User>.Failure(IamError.InternalServerError, _localizer[nameof(IamError.InternalServerError)]);
+        }
+    }
+
     [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.edu\.pe$", RegexOptions.IgnoreCase)]
     private static partial Regex InstitutionalEmailRegex();
 }
