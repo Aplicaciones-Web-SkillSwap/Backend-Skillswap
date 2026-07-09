@@ -24,6 +24,7 @@ public static class ModelBuilderExtensions
         builder.Entity<Session>().Property(s => s.Status).IsRequired().HasMaxLength(50);
         builder.Entity<Session>().Property(s => s.ScheduledAt).IsRequired();
         builder.Entity<Session>().Property(s => s.CourseId).IsRequired();
+        builder.Entity<Session>().Property(s => s.ProposedByUserId).IsRequired();
 
         builder.Entity<Message>().ToTable("messages");
         builder.Entity<Message>().HasKey(m => m.Id);

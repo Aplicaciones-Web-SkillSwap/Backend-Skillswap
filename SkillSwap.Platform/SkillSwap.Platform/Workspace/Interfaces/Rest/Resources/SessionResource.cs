@@ -24,6 +24,9 @@ namespace SkillSwap.Platform.Workspace.Interfaces.Rest.Resources;
 /// <param name="CourseId">
 ///     The unique identifier of the course the session is related to
 /// </param>
+/// <param name="ProposedByUserId">
+///     The identifier of the user who proposed the current ScheduledAt value
+/// </param>
 public record SessionResource(
     int Id,
     int LearnerId,
@@ -31,4 +34,5 @@ public record SessionResource(
     string Topic,
     string Status,
     DateTime ScheduledAt,
-    int CourseId);
+    int CourseId,
+    int ProposedByUserId);

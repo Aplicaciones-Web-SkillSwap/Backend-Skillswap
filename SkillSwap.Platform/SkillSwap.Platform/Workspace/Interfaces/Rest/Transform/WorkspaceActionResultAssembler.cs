@@ -20,6 +20,7 @@ public static class WorkspaceActionResultAssembler
             WorkspaceError.MessageNotFound => StatusCodes.Status404NotFound,
             WorkspaceError.InvalidSessionStatus => StatusCodes.Status400BadRequest,
             WorkspaceError.NotSessionParticipant => StatusCodes.Status403Forbidden,
+            WorkspaceError.NotYourTurn => StatusCodes.Status403Forbidden,
             WorkspaceError.OperationCancelled => StatusCodes.Status409Conflict,
             WorkspaceError.DatabaseError => StatusCodes.Status500InternalServerError,
             WorkspaceError.InternalServerError => StatusCodes.Status500InternalServerError,

@@ -26,6 +26,7 @@ public static class SessionResourceFromEntityAssembler
             entity.Topic,
             entity.Status,
             entity.ScheduledAt,
-            entity.CourseId);
+            entity.CourseId,
+            entity.ProposedByUserId);
     }
 }
