@@ -7,6 +7,7 @@ public enum WorkspaceError
     MessageNotFound,
     InvalidSessionStatus,
     SelfSessionNotAllowed,
+    PendingSessionAlreadyExists,
     NotSessionParticipant,
     NotYourTurn,
     OperationCancelled,
