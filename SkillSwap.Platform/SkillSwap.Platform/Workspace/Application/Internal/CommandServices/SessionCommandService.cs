@@ -70,6 +70,25 @@ public class SessionCommandService(
             return Result<Session>.Failure(WorkspaceError.SessionNotFound,
                 _localizer[nameof(WorkspaceError.SessionNotFound)]);
 
+        var isTutor = command.ActorUserId == session.SessionTutorId.UserId;
+        var isLearner = command.ActorUserId == session.SessionLearnerId.UserId;
+        if (!isTutor && !isLearner)
+            return Result<Session>.Failure(WorkspaceError.NotSessionParticipant,
+                _localizer[nameof(WorkspaceError.NotSessionParticipant)]);
+
+        var transitionAllowed = (session.Status, command.Status) switch
+        {
+            ("pending", "scheduled")   => isTutor,
+            ("pending", "rejected")    => isTutor,
+            ("pending", "cancelled")   => isTutor || isLearner,
+            ("scheduled", "cancelled") => isTutor || isLearner,
+            ("scheduled", "completed") => isTutor || isLearner,
+            _ => false
+        };
+        if (!transitionAllowed)
+            return Result<Session>.Failure(WorkspaceError.InvalidSessionStatus,
+                _localizer[nameof(WorkspaceError.InvalidSessionStatus)]);
+
         session.UpdateStatus(command);
         try
         {

@@ -18,14 +18,17 @@ public static class SubmitQuizAttemptCommandFromResourceAssembler
     /// <param name="resource">
     ///     The <see cref="SubmitQuizAttemptResource" /> containing the attempt data.
     /// </param>
+    /// <param name="learnerId">
+    ///     The authenticated learner's identifier, derived from the JWT.
+    /// </param>
     /// <returns>
     ///     A new <see cref="SubmitQuizAttemptCommand" /> instance.
     /// </returns>
-    public static SubmitQuizAttemptCommand ToCommandFromResource(int quizId, SubmitQuizAttemptResource resource)
+    public static SubmitQuizAttemptCommand ToCommandFromResource(int quizId, SubmitQuizAttemptResource resource, int learnerId)
     {
         return new SubmitQuizAttemptCommand(
             quizId,
-            resource.LearnerId,
+            learnerId,
             resource.SessionId,
             resource.SelectedAnswers);
     }

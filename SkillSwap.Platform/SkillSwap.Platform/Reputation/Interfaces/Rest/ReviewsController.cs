@@ -8,6 +8,7 @@ using SkillSwap.Platform.Reputation.Domain.Model.Queries;
 using SkillSwap.Platform.Reputation.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Reputation.Interfaces.Rest.Transform;
 using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+using SkillSwap.Platform.Shared.Interfaces.Rest;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
@@ -87,7 +88,7 @@ public class ReviewsController(
     [SwaggerResponse(409, "A review already exists for this session by this reviewer.")]
     public async Task<IActionResult> CreateReview(CreateReviewResource resource, CancellationToken cancellationToken)
     {
-        var createReviewCommand = CreateReviewCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var createReviewCommand = CreateReviewCommandFromResourceAssembler.ToCommandFromResource(resource, this.CurrentUserId());
         var result = await reviewCommandService.Handle(createReviewCommand, cancellationToken);
 
         return ReputationActionResultAssembler.ToActionResultFromCreateReviewResult(

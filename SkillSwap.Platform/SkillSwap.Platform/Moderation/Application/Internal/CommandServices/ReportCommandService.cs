@@ -6,6 +6,7 @@ using SkillSwap.Platform.Moderation.Domain.Repositories;
 using SkillSwap.Platform.Shared.Application.Model;
 using SkillSwap.Platform.Shared.Domain.Repositories;
 using SkillSwap.Platform.Shared.Resources.Errors;
+using SkillSwap.Platform.Workspace.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
@@ -17,11 +18,16 @@ namespace SkillSwap.Platform.Moderation.Application.Internal.CommandServices;
 /// <param name="reportRepository">
 ///     Report repository
 /// </param>
+/// <param name="sessionRepository">
+///     Workspace session repository, used to validate the report references a real session
+///     the reporter (and reported user) actually participated in.
+/// </param>
 /// <param name="unitOfWork">
 ///     Unit of work
 /// </param>
 public class ReportCommandService(
     IReportRepository reportRepository,
+    ISessionRepository sessionRepository,
     IUnitOfWork unitOfWork,
     IStringLocalizer<ErrorMessage> localizer)
     : IReportCommandService
@@ -34,6 +40,24 @@ public class ReportCommandService(
         if (command.ReporterUserId == command.ReportedUserId)
             return Result<Report>.Failure(ModerationError.SelfReportNotAllowed,
                 _localizer[nameof(ModerationError.SelfReportNotAllowed)]);
+
+        var session = await sessionRepository.FindByIdAsync(command.SessionId, cancellationToken);
+        if (session is null)
+            return Result<Report>.Failure(ModerationError.SessionNotFound,
+                _localizer[nameof(ModerationError.SessionNotFound)]);
+
+        var reporterIsLearner = session.SessionLearnerId.UserId == command.ReporterUserId;
+        var reporterIsTutor = session.SessionTutorId.UserId == command.ReporterUserId;
+        if (!reporterIsLearner && !reporterIsTutor)
+            return Result<Report>.Failure(ModerationError.ReporterNotSessionParticipant,
+                _localizer[nameof(ModerationError.ReporterNotSessionParticipant)]);
+
+        var reportedIsTheOtherParticipant =
+            (reporterIsLearner && session.SessionTutorId.UserId == command.ReportedUserId) ||
+            (reporterIsTutor && session.SessionLearnerId.UserId == command.ReportedUserId);
+        if (!reportedIsTheOtherParticipant)
+            return Result<Report>.Failure(ModerationError.ReportedUserNotSessionParticipant,
+                _localizer[nameof(ModerationError.ReportedUserNotSessionParticipant)]);
 
         var alreadyExists = await reportRepository.ExistsPendingReportAsync(
             command.ReporterUserId, command.ReportedUserId, cancellationToken);

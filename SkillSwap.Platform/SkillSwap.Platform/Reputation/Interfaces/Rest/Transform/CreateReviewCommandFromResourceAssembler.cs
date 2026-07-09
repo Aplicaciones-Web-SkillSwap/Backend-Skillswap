@@ -15,13 +15,17 @@ public static class CreateReviewCommandFromResourceAssembler
     /// <param name="resource">
     ///     The <see cref="CreateReviewResource" /> containing the data for creating a review.
     /// </param>
+    /// <param name="reviewerId">
+    ///     The authenticated caller's user id, used as the reviewer instead of any value the
+    ///     client might submit in the resource body.
+    /// </param>
     /// <returns>
     ///     A new <see cref="CreateReviewCommand" /> instance.
     /// </returns>
-    public static CreateReviewCommand ToCommandFromResource(CreateReviewResource resource)
+    public static CreateReviewCommand ToCommandFromResource(CreateReviewResource resource, int reviewerId)
     {
         return new CreateReviewCommand(
-            resource.ReviewerId,
+            reviewerId,
             resource.TutorId,
             resource.SessionId,
             resource.Rating,

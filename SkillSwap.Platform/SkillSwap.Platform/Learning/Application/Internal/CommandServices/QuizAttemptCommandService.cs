@@ -8,6 +8,7 @@ using SkillSwap.Platform.Learning.Domain.Repositories;
 using SkillSwap.Platform.Shared.Application.Model;
 using SkillSwap.Platform.Shared.Domain.Repositories;
 using SkillSwap.Platform.Shared.Resources.Errors;
+using SkillSwap.Platform.Workspace.Domain.Repositories;
 
 namespace SkillSwap.Platform.Learning.Application.Internal.CommandServices;
 
@@ -25,6 +26,9 @@ namespace SkillSwap.Platform.Learning.Application.Internal.CommandServices;
 /// <param name="quizRepository">
 ///     Quiz repository
 /// </param>
+/// <param name="sessionRepository">
+///     Session repository
+/// </param>
 /// <param name="unitOfWork">
 ///     Unit of work
 /// </param>
@@ -34,6 +38,7 @@ namespace SkillSwap.Platform.Learning.Application.Internal.CommandServices;
 public class QuizAttemptCommandService(
     IQuizAttemptRepository quizAttemptRepository,
     IQuizRepository quizRepository,
+    ISessionRepository sessionRepository,
     IUnitOfWork unitOfWork,
     IStringLocalizer<ErrorMessage> localizer)
     : IQuizAttemptCommandService
@@ -47,6 +52,15 @@ public class QuizAttemptCommandService(
         if (quiz is null)
             return Result<QuizAttempt>.Failure(LearningError.QuizNotFound,
                 _localizer[nameof(LearningError.QuizNotFound)]);
+
+        var session = await sessionRepository.FindByIdAsync(command.SessionId, cancellationToken);
+        if (session is null)
+            return Result<QuizAttempt>.Failure(LearningError.SessionNotFound,
+                _localizer[nameof(LearningError.SessionNotFound)]);
+
+        if (session.SessionLearnerId.UserId != command.LearnerId)
+            return Result<QuizAttempt>.Failure(LearningError.LearnerNotSessionParticipant,
+                _localizer[nameof(LearningError.LearnerNotSessionParticipant)]);
 
         if (command.SelectedAnswers.Count != quiz.Questions.Count)
             return Result<QuizAttempt>.Failure(LearningError.InvalidAnswerCount,

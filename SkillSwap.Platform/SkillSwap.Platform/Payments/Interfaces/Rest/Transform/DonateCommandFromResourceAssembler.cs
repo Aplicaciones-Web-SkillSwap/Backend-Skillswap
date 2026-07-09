@@ -14,13 +14,16 @@ public static class DonateCommandFromResourceAssembler
     /// <param name="resource">
     ///     The <see cref="DonateResource" /> containing the donation data.
     /// </param>
+    /// <param name="fromUserId">
+    ///     The authenticated sender's identifier, derived from the JWT.
+    /// </param>
     /// <returns>
     ///     A new <see cref="DonateCommand" /> instance.
     /// </returns>
-    public static DonateCommand ToCommandFromResource(DonateResource resource)
+    public static DonateCommand ToCommandFromResource(DonateResource resource, int fromUserId)
     {
         return new DonateCommand(
-            resource.FromUserId,
+            fromUserId,
             resource.ToUserId,
             resource.Amount,
             resource.Description);

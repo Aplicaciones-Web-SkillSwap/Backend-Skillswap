@@ -8,6 +8,7 @@ using SkillSwap.Platform.Payments.Domain.Model.Queries;
 using SkillSwap.Platform.Payments.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Payments.Interfaces.Rest.Transform;
 using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+using SkillSwap.Platform.Shared.Interfaces.Rest;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
@@ -81,7 +82,7 @@ public class TransactionsController(
     [SwaggerResponse(404, "The sender's or receiver's wallet was not found.")]
     public async Task<IActionResult> Donate(DonateResource resource, CancellationToken cancellationToken)
     {
-        var donateCommand = DonateCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var donateCommand = DonateCommandFromResourceAssembler.ToCommandFromResource(resource, this.CurrentUserId());
         var result = await donationCommandService.Handle(donateCommand, cancellationToken);
 
         return PaymentsActionResultAssembler.ToActionResultFromDonateResult(

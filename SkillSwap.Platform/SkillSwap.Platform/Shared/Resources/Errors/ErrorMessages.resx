@@ -49,4 +49,34 @@
     <data name="SelfDonationNotAllowed" xml:space="preserve">
         <value>A user cannot donate to themselves.</value>
     </data>
+    <data name="SessionNotFound" xml:space="preserve">
+        <value>The specified session was not found.</value>
+    </data>
+    <data name="SessionNotCompleted" xml:space="preserve">
+        <value>Reviews can only be left for a completed session.</value>
+    </data>
+    <data name="ReviewerNotSessionLearner" xml:space="preserve">
+        <value>Only the learner of this session can leave a review for it.</value>
+    </data>
+    <data name="TutorMismatch" xml:space="preserve">
+        <value>The specified tutor does not match this session's tutor.</value>
+    </data>
+    <data name="NotSessionParticipant" xml:space="preserve">
+        <value>You are not a participant of this session.</value>
+    </data>
+    <data name="InvalidSessionStatus" xml:space="preserve">
+        <value>That status change is not allowed for this session.</value>
+    </data>
+    <data name="ReporterNotSessionParticipant" xml:space="preserve">
+        <value>You can only report a session you were part of.</value>
+    </data>
+    <data name="ReportedUserNotSessionParticipant" xml:space="preserve">
+        <value>The reported user must be the other participant of the referenced session.</value>
+    </data>
+    <data name="LearnerNotSessionParticipant" xml:space="preserve">
+        <value>You are not the learner of the specified session.</value>
+    </data>
+    <data name="NoCompletedSessionWithTutor" xml:space="preserve">
+        <value>You need a completed session with this tutor before you can donate to them.</value>
+    </data>
 </root>
