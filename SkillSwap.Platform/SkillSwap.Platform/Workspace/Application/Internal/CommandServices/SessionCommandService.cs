@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using MySql.Data.MySqlClient;
 using SkillSwap.Platform.Shared.Application.Model;
 using SkillSwap.Platform.Shared.Domain.Repositories;
 using SkillSwap.Platform.Shared.Resources.Errors;
@@ -54,6 +55,13 @@ public class SessionCommandService(
         {
             return Result<Session>.Failure(WorkspaceError.OperationCancelled,
                 _localizer[nameof(WorkspaceError.OperationCancelled)]);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is MySqlException { Number: 1062 })
+        {
+            // Two near-simultaneous requests both passed the in-memory duplicate check above;
+            // the database's unique constraint on pending (learner, tutor) pairs caught the second one.
+            return Result<Session>.Failure(WorkspaceError.PendingSessionAlreadyExists,
+                _localizer[nameof(WorkspaceError.PendingSessionAlreadyExists)]);
         }
         catch (DbUpdateException)
         {
