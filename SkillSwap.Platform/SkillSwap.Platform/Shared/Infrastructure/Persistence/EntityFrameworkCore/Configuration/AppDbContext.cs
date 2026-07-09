@@ -18,6 +18,13 @@ namespace SkillSwap.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCo
 /// </remarks>
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        // MySQL DATETIME columns carry no offset; every DateTime we persist is already UTC
+        // (DateTime.UtcNow or a client ISO string with an offset), so re-tag reads as Utc.
+        configurationBuilder.Properties<DateTime>().HaveConversion<UtcDateTimeConverter>();
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
