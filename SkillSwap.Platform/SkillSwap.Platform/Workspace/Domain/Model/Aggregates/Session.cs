@@ -21,6 +21,7 @@ public partial class Session
         ScheduledAt = DateTime.UtcNow;
         CourseId = 0;
         ProposedByUserId = 0;
+        InitialMessage = string.Empty;
     }
 
     public Session(CreateSessionCommand command)
@@ -32,6 +33,7 @@ public partial class Session
         ScheduledAt = command.ScheduledAt;
         CourseId = command.CourseId;
         ProposedByUserId = command.LearnerId;
+        InitialMessage = command.InitialMessage;
     }
 
     public int Id { get; private set; }
@@ -42,6 +44,7 @@ public partial class Session
     public DateTime ScheduledAt { get; private set; }
     public int CourseId { get; private set; }
     public int ProposedByUserId { get; private set; }
+    public string InitialMessage { get; private set; }
 
     public bool IsPending => Status == "pending";
     public bool IsScheduled => Status == "scheduled";

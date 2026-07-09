@@ -27,6 +27,10 @@ namespace SkillSwap.Platform.Workspace.Interfaces.Rest.Resources;
 /// <param name="ProposedByUserId">
 ///     The identifier of the user who proposed the current ScheduledAt value
 /// </param>
+/// <param name="InitialMessage">
+///     An optional note from the learner explaining the request, shown to the tutor before they
+///     accept or reject the session.
+/// </param>
 public record SessionResource(
     int Id,
     int LearnerId,
@@ -35,4 +39,5 @@ public record SessionResource(
     string Status,
     DateTime ScheduledAt,
     int CourseId,
-    int ProposedByUserId);
+    int ProposedByUserId,
+    string InitialMessage);
