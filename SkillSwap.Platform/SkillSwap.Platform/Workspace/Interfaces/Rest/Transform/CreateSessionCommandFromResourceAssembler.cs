@@ -28,6 +28,7 @@ public static class CreateSessionCommandFromResourceAssembler
             resource.TutorId,
             resource.Topic,
             resource.ScheduledAt,
-            resource.CourseId);
+            resource.CourseId,
+            resource.InitialMessage ?? string.Empty);
     }
 }
