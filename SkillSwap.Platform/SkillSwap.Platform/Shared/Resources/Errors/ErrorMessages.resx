@@ -91,4 +91,7 @@
     <data name="NotYourTurn" xml:space="preserve">
         <value>It is not your turn to propose a new date for this session.</value>
     </data>
+    <data name="OnlyTutorCanShareQuiz" xml:space="preserve">
+        <value>Only the tutor can share a quiz in this session.</value>
+    </data>
 </root>

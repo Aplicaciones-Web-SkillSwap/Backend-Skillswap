@@ -25,6 +25,7 @@ namespace SkillSwap.Platform.Workspace.Application.Internal.CommandServices;
 /// </param>
 public class MessageCommandService(
     IMessageRepository messageRepository,
+    ISessionRepository sessionRepository,
     IUnitOfWork unitOfWork,
     IStringLocalizer<ErrorMessage> localizer)
     : IMessageCommandService
@@ -34,6 +35,21 @@ public class MessageCommandService(
     /// <inheritdoc />
     public async Task<Result<Message>> Handle(CreateMessageCommand command, CancellationToken cancellationToken)
     {
+        var session = await sessionRepository.FindByIdAsync(command.SessionId, cancellationToken);
+        if (session is null)
+            return Result<Message>.Failure(WorkspaceError.SessionNotFound,
+                _localizer[nameof(WorkspaceError.SessionNotFound)]);
+
+        var isTutor = session.SessionTutorId.UserId == command.SenderId;
+        var isLearner = session.SessionLearnerId.UserId == command.SenderId;
+        if (!isTutor && !isLearner)
+            return Result<Message>.Failure(WorkspaceError.NotSessionParticipant,
+                _localizer[nameof(WorkspaceError.NotSessionParticipant)]);
+
+        if (command.QuizId.HasValue && !isTutor)
+            return Result<Message>.Failure(WorkspaceError.OnlyTutorCanShareQuiz,
+                _localizer[nameof(WorkspaceError.OnlyTutorCanShareQuiz)]);
+
         var message = new Message(command);
         try
         {

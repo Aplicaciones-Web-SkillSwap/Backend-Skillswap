@@ -15,14 +15,17 @@ public static class CreateMessageCommandFromResourceAssembler
     /// <param name="resource">
     ///     The <see cref="CreateMessageResource" /> containing the data for creating a message.
     /// </param>
+    /// <param name="senderId">
+    ///     The authenticated sender's identifier, derived from the JWT.
+    /// </param>
     /// <returns>
     ///     A new <see cref="CreateMessageCommand" /> instance.
     /// </returns>
-    public static CreateMessageCommand ToCommandFromResource(CreateMessageResource resource)
+    public static CreateMessageCommand ToCommandFromResource(CreateMessageResource resource, int senderId)
     {
         return new CreateMessageCommand(
             resource.SessionId,
-            resource.SenderId,
+            senderId,
             resource.Content,
             resource.FileUrl,
             resource.FileName,
