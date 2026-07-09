@@ -88,7 +88,7 @@ public class SessionsController(
     [SwaggerResponse(400, "The session was not created.")]
     public async Task<IActionResult> CreateSession(CreateSessionResource resource, CancellationToken cancellationToken)
     {
-        var createSessionCommand = CreateSessionCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var createSessionCommand = CreateSessionCommandFromResourceAssembler.ToCommandFromResource(resource, this.CurrentUserId());
         var result = await sessionCommandService.Handle(createSessionCommand, cancellationToken);
 
         return WorkspaceActionResultAssembler.ToActionResultFromCreateSessionResult(

@@ -71,6 +71,10 @@ public class TutorCommandService(
             return Result<Tutor>.Failure(DiscoveryError.TutorNotFound,
                 _localizer[nameof(DiscoveryError.TutorNotFound)]);
 
+        if (tutor.TutorUserId.UserId != command.ActorUserId)
+            return Result<Tutor>.Failure(DiscoveryError.NotTutorOwner,
+                _localizer[nameof(DiscoveryError.NotTutorOwner)]);
+
         tutor.Update(command);
         try
         {

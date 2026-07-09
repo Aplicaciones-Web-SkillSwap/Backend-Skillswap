@@ -9,6 +9,7 @@ using SkillSwap.Platform.Discovery.Domain.Model.Queries;
 using SkillSwap.Platform.Discovery.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Discovery.Interfaces.Rest.Transform;
 using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+using SkillSwap.Platform.Shared.Interfaces.Rest;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Swashbuckle.AspNetCore.Annotations;
@@ -95,7 +96,7 @@ public class TutorsController(
     [SwaggerResponse(409, "A tutor profile already exists for this user.")]
     public async Task<IActionResult> CreateTutor(CreateTutorResource resource, CancellationToken cancellationToken)
     {
-        var createTutorCommand = CreateTutorCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var createTutorCommand = CreateTutorCommandFromResourceAssembler.ToCommandFromResource(resource, this.CurrentUserId());
         var result = await tutorCommandService.Handle(createTutorCommand, cancellationToken);
 
         return DiscoveryActionResultAssembler.ToActionResultFromCreateTutorResult(
@@ -112,11 +113,12 @@ public class TutorsController(
     [Authorize(Roles = "Student")]
     [SwaggerOperation("Update Tutor", "Update an existing tutor profile.", OperationId = "UpdateTutor")]
     [SwaggerResponse(200, "The tutor was updated.", typeof(TutorResource))]
+    [SwaggerResponse(403, "The authenticated user is not the owner of this tutor profile.")]
     [SwaggerResponse(404, "The tutor was not found.")]
     public async Task<IActionResult> UpdateTutor(int tutorId, UpdateTutorResource resource,
         CancellationToken cancellationToken)
     {
-        var updateTutorCommand = UpdateTutorCommandFromResourceAssembler.ToCommandFromResource(tutorId, resource);
+        var updateTutorCommand = UpdateTutorCommandFromResourceAssembler.ToCommandFromResource(tutorId, resource, this.CurrentUserId());
         var result = await tutorCommandService.Handle(updateTutorCommand, cancellationToken);
 
         return DiscoveryActionResultAssembler.ToActionResultFromUpdateTutorResult(
