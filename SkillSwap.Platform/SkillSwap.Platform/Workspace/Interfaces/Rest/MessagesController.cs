@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Localization;
 using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+using SkillSwap.Platform.Shared.Interfaces.Rest;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using SkillSwap.Platform.Workspace.Application.CommandServices;
@@ -67,7 +68,7 @@ public class MessagesController(
     [SwaggerResponse(400, "The message was not created.")]
     public async Task<IActionResult> CreateMessage(CreateMessageResource resource, CancellationToken cancellationToken)
     {
-        var createMessageCommand = CreateMessageCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var createMessageCommand = CreateMessageCommandFromResourceAssembler.ToCommandFromResource(resource, this.CurrentUserId());
         var result = await messageCommandService.Handle(createMessageCommand, cancellationToken);
 
         return WorkspaceActionResultAssembler.ToActionResultFromCreateMessageResult(

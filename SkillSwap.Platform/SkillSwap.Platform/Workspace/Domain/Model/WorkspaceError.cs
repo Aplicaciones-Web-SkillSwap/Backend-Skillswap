@@ -10,6 +10,7 @@ public enum WorkspaceError
     PendingSessionAlreadyExists,
     NotSessionParticipant,
     NotYourTurn,
+    OnlyTutorCanShareQuiz,
     OperationCancelled,
     DatabaseError,
     InternalServerError
