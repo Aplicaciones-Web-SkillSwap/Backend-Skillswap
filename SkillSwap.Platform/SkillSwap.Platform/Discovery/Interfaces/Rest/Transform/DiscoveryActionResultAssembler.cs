@@ -18,6 +18,7 @@ public static class DiscoveryActionResultAssembler
         {
             DiscoveryError.TutorNotFound => StatusCodes.Status404NotFound,
             DiscoveryError.TutorAlreadyExists => StatusCodes.Status409Conflict,
+            DiscoveryError.NotTutorOwner => StatusCodes.Status403Forbidden,
             DiscoveryError.OperationCancelled => StatusCodes.Status409Conflict,
             DiscoveryError.DatabaseError => StatusCodes.Status500InternalServerError,
             DiscoveryError.InternalServerError => StatusCodes.Status500InternalServerError,

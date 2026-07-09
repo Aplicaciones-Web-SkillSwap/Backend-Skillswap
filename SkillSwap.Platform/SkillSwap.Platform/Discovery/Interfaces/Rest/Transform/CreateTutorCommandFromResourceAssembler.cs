@@ -15,13 +15,16 @@ public static class CreateTutorCommandFromResourceAssembler
     /// <param name="resource">
     ///     The <see cref="CreateTutorResource" /> containing the data for creating a tutor. Must not be null.
     /// </param>
+    /// <param name="userId">
+    ///     The authenticated user's identifier, derived from the JWT.
+    /// </param>
     /// <returns>
     ///     A new <see cref="CreateTutorCommand" /> instance.
     /// </returns>
-    public static CreateTutorCommand ToCommandFromResource(CreateTutorResource resource)
+    public static CreateTutorCommand ToCommandFromResource(CreateTutorResource resource, int userId)
     {
         return new CreateTutorCommand(
-            resource.UserId,
+            userId,
             resource.Name,
             resource.University,
             resource.Career,

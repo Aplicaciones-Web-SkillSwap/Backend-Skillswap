@@ -18,16 +18,21 @@ public static class UpdateTutorCommandFromResourceAssembler
     /// <param name="resource">
     ///     The <see cref="UpdateTutorResource" /> containing the updated data. Must not be null.
     /// </param>
+    /// <param name="actorUserId">
+    ///     The authenticated user's identifier, derived from the JWT.
+    /// </param>
     /// <returns>
     ///     A new <see cref="UpdateTutorCommand" /> instance.
     /// </returns>
-    public static UpdateTutorCommand ToCommandFromResource(int tutorId, UpdateTutorResource resource)
+    public static UpdateTutorCommand ToCommandFromResource(int tutorId, UpdateTutorResource resource, int actorUserId)
     {
         return new UpdateTutorCommand(
             tutorId,
             resource.Bio,
             resource.Skills,
             resource.AvatarUrl,
-            resource.MainSubject);
+            resource.MainSubject,
+            actorUserId,
+            resource.Visible);
     }
 }

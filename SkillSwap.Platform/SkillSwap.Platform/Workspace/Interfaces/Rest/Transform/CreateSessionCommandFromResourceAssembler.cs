@@ -15,13 +15,16 @@ public static class CreateSessionCommandFromResourceAssembler
     /// <param name="resource">
     ///     The <see cref="CreateSessionResource" /> containing the data for creating a session.
     /// </param>
+    /// <param name="learnerId">
+    ///     The authenticated learner's identifier, derived from the JWT.
+    /// </param>
     /// <returns>
     ///     A new <see cref="CreateSessionCommand" /> instance.
     /// </returns>
-    public static CreateSessionCommand ToCommandFromResource(CreateSessionResource resource)
+    public static CreateSessionCommand ToCommandFromResource(CreateSessionResource resource, int learnerId)
     {
         return new CreateSessionCommand(
-            resource.LearnerId,
+            learnerId,
             resource.TutorId,
             resource.Topic,
             resource.ScheduledAt,
