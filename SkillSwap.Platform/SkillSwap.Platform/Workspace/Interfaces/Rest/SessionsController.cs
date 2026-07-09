@@ -122,6 +122,28 @@ public class SessionsController(
         );
     }
     
+    [HttpPatch("{sessionId:int}/reschedule")]
+    [Authorize(Roles = "Student")]
+    [SwaggerOperation("Reschedule Session", "Propose a new date/time for a pending session.", OperationId = "RescheduleSession")]
+    [SwaggerResponse(200, "The session was rescheduled.", typeof(SessionResource))]
+    [SwaggerResponse(403, "It is not the authenticated user's turn to propose a new date, or they are not a participant.")]
+    [SwaggerResponse(404, "The session was not found.")]
+    public async Task<IActionResult> RescheduleSession(int sessionId, RescheduleSessionResource resource,
+        CancellationToken cancellationToken)
+    {
+        var rescheduleSessionCommand =
+            RescheduleSessionCommandFromResourceAssembler.ToCommandFromResource(sessionId, resource, this.CurrentUserId());
+        var result = await sessionCommandService.Handle(rescheduleSessionCommand, cancellationToken);
+
+        return WorkspaceActionResultAssembler.ToActionResultFromUpdateSessionStatusResult(
+            this,
+            result,
+            _errorLocalizer,
+            _problemDetailsFactory,
+            updatedSession => Ok(SessionResourceFromEntityAssembler.ToResourceFromEntity(updatedSession))
+        );
+    }
+
     [HttpPut("{sessionId:int}")]
     [SwaggerOperation("Update Session", "Update a session by its unique identifier.", OperationId = "UpdateSession")]
     [SwaggerResponse(200, "The session was updated.", typeof(SessionResource))]
