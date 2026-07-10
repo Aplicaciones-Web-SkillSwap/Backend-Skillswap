@@ -23,6 +23,8 @@ public static class TransactionResourceFromEntityAssembler
         return new TransactionResource(
             entity.Id,
             entity.WalletId,
+            entity.AmountSent,
+            entity.PlatformFee,
             entity.Amount,
             entity.Type,
             entity.Description,

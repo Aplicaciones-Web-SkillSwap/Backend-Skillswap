@@ -92,7 +92,9 @@ public class DonationCommandService(
                         receiverWallet.Id,
                         amountReceived,
                         "donation",
-                        command.Description));
+                        command.Description,
+                        command.Amount,
+                        platformFee));
 
                 await transactionRepository.AddAsync(transaction, cancellationToken);
                 await unitOfWork.CompleteAsync(cancellationToken);
