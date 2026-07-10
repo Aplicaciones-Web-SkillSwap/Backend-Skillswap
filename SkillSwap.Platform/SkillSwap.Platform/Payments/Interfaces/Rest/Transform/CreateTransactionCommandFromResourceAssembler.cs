@@ -24,6 +24,8 @@ public static class CreateTransactionCommandFromResourceAssembler
             resource.WalletId,
             resource.Amount,
             resource.Type,
-            resource.Description);
+            resource.Description,
+            resource.Amount,
+            0m);
     }
 }

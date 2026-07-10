@@ -22,6 +22,8 @@ public static class ModelBuilderExtensions
         builder.Entity<Transaction>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Transaction>().Property(t => t.WalletId).IsRequired();
         builder.Entity<Transaction>().Property(t => t.Amount).IsRequired().HasColumnType("decimal(18,2)");
+        builder.Entity<Transaction>().Property(t => t.AmountSent).IsRequired().HasColumnType("decimal(18,2)");
+        builder.Entity<Transaction>().Property(t => t.PlatformFee).IsRequired().HasColumnType("decimal(18,2)");
         builder.Entity<Transaction>().Property(t => t.Type).IsRequired().HasMaxLength(50);
         builder.Entity<Transaction>().Property(t => t.Description).IsRequired().HasMaxLength(500);
         builder.Entity<Transaction>().Property(t => t.CreatedAt).IsRequired();

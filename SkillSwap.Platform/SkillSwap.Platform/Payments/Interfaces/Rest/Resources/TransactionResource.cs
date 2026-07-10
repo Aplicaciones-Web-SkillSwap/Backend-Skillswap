@@ -9,8 +9,14 @@ namespace SkillSwap.Platform.Payments.Interfaces.Rest.Resources;
 /// <param name="WalletId">
 ///     The unique identifier of the wallet this transaction belongs to
 /// </param>
-/// <param name="Amount">
-///     The amount of the transaction
+/// <param name="AmountSent">
+///     The original gross amount sent by the payer, before the platform fee
+/// </param>
+/// <param name="PlatformFee">
+///     The platform fee deducted from <paramref name="AmountSent" />
+/// </param>
+/// <param name="AmountReceived">
+///     The net amount this transaction added to the wallet
 /// </param>
 /// <param name="Type">
 ///     The type of the transaction
@@ -24,7 +30,9 @@ namespace SkillSwap.Platform.Payments.Interfaces.Rest.Resources;
 public record TransactionResource(
     int Id,
     int WalletId,
-    decimal Amount,
+    decimal AmountSent,
+    decimal PlatformFee,
+    decimal AmountReceived,
     string Type,
     string Description,
     DateTime CreatedAt);
