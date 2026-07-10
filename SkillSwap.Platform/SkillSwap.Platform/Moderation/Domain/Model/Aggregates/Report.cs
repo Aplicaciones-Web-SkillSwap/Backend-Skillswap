@@ -42,6 +42,7 @@ public partial class Report
     public string Status { get; private set; }
     public bool Closed { get; private set; }
     public DateTime ReportedAt { get; }
+    public DateTime? ResolvedAt { get; private set; }
 
     public bool IsPending => Status == "pending";
 
@@ -49,5 +50,6 @@ public partial class Report
     {
         Closed = true;
         Status = "resolved";
+        ResolvedAt = DateTime.UtcNow;
     }
 }
