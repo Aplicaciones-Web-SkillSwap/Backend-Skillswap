@@ -22,4 +22,9 @@ public interface ISanctionQueryService
     ///     Handle get sanctions by report id
     /// </summary>
     Task<IEnumerable<Sanction>> Handle(GetSanctionsByReportIdQuery query, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Handle get sanctions by sanctioned user id
+    /// </summary>
+    Task<IEnumerable<Sanction>> Handle(GetSanctionsBySanctionedUserIdQuery query, CancellationToken cancellationToken);
 }

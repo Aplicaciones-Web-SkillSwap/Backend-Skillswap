@@ -25,6 +25,7 @@ public static class ModerationActionResultAssembler
             ModerationError.ReporterNotSessionParticipant => StatusCodes.Status403Forbidden,
             ModerationError.ReportedUserNotSessionParticipant => StatusCodes.Status400BadRequest,
             ModerationError.InvalidSanctionDuration => StatusCodes.Status400BadRequest,
+            ModerationError.NotSanctionOwner => StatusCodes.Status403Forbidden,
             ModerationError.OperationCancelled => StatusCodes.Status409Conflict,
             ModerationError.DatabaseError => StatusCodes.Status500InternalServerError,
             ModerationError.InternalServerError => StatusCodes.Status500InternalServerError,
@@ -78,6 +79,19 @@ public static class ModerationActionResultAssembler
     }
 
     public static IActionResult ToActionResultFromCreateSanctionResult(
+        ControllerBase controller,
+        Result<Sanction> result,
+        IStringLocalizer<ErrorMessage> errorLocalizer,
+        ProblemDetailsFactory problemDetailsFactory,
+        Func<Sanction, IActionResult> successAction)
+    {
+        if (result.IsSuccess) return successAction(result.Value!);
+
+        var statusCode = ToStatusCodeFromModerationError((ModerationError)result.Error!);
+        return problemDetailsFactory.CreateProblemDetails(controller, statusCode, result.Error, result.Message);
+    }
+
+    public static IActionResult ToActionResultFromAcknowledgeSanctionResult(
         ControllerBase controller,
         Result<Sanction> result,
         IStringLocalizer<ErrorMessage> errorLocalizer,

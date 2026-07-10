@@ -31,4 +31,11 @@ public class SanctionQueryService(ISanctionRepository sanctionRepository) : ISan
     {
         return await sanctionRepository.FindByReportIdAsync(query.ReportId, cancellationToken);
     }
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<Sanction>> Handle(GetSanctionsBySanctionedUserIdQuery query,
+        CancellationToken cancellationToken)
+    {
+        return await sanctionRepository.FindBySanctionedUserIdAsync(query.SanctionedUserId, cancellationToken);
+    }
 }

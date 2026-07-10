@@ -19,4 +19,16 @@ public interface ISanctionRepository : IBaseRepository<Sanction>
     ///     A list of <see cref="Sanction" /> objects.
     /// </returns>
     Task<IEnumerable<Sanction>> FindByReportIdAsync(int reportId, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Find all sanctions applied to a specific user.
+    /// </summary>
+    /// <param name="userId">
+    ///     The unique identifier of the sanctioned user.
+    /// </param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>
+    ///     A list of <see cref="Sanction" /> objects.
+    /// </returns>
+    Task<IEnumerable<Sanction>> FindBySanctionedUserIdAsync(int userId, CancellationToken cancellationToken);
 }

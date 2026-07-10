@@ -20,4 +20,16 @@ public interface ISanctionCommandService
     ///     The <see cref="Result{T}" /> wrapping the created <see cref="Sanction" />
     /// </returns>
     Task<Result<Sanction>> Handle(CreateSanctionCommand command, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Handle acknowledge sanction command
+    /// </summary>
+    /// <param name="command">
+    ///     The <see cref="AcknowledgeSanctionCommand" /> command
+    /// </param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>
+    ///     The <see cref="Result{T}" /> wrapping the acknowledged <see cref="Sanction" />
+    /// </returns>
+    Task<Result<Sanction>> Handle(AcknowledgeSanctionCommand command, CancellationToken cancellationToken);
 }
