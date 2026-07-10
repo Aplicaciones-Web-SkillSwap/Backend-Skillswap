@@ -30,7 +30,10 @@ public static class SanctionResourceFromEntityAssembler
             entity.SanctionedUserId.UserId,
             entity.Type,
             entity.Description,
-            entity.DurationDays
+            entity.DurationDays,
+            entity.IsPermanent,
+            entity.CreatedAt,
+            entity.AcknowledgedAt
         );
     }
 }

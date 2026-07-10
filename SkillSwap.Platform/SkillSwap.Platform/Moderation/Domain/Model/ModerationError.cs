@@ -11,6 +11,7 @@ public enum ModerationError
     ReporterNotSessionParticipant,
     ReportedUserNotSessionParticipant,
     InvalidSanctionDuration,
+    NotSanctionOwner,
     OperationCancelled,
     DatabaseError,
     InternalServerError

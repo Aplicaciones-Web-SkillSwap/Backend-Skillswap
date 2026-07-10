@@ -16,11 +16,15 @@ namespace SkillSwap.Platform.Moderation.Interfaces.Rest.Resources;
 ///     The description of the sanction
 /// </param>
 /// <param name="DurationDays">
-///     The number of days the sanction lasts
+///     The number of days the sanction lasts. Ignored when <paramref name="IsPermanent" /> is true
+/// </param>
+/// <param name="IsPermanent">
+///     Whether this sanction (a ban) never expires
 /// </param>
 public record CreateSanctionResource(
     int ReportId,
     int SanctionedUserId,
     string Type,
     string Description,
-    int DurationDays);
+    int DurationDays,
+    bool IsPermanent = false);

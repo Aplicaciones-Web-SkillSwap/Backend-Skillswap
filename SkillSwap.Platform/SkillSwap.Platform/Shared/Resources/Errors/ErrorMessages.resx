@@ -28,8 +28,14 @@
     <data name="InvalidSanctionDuration" xml:space="preserve">
         <value>The sanction duration cannot be negative.</value>
     </data>
+    <data name="NotSanctionOwner" xml:space="preserve">
+        <value>You can only acknowledge your own sanctions.</value>
+    </data>
     <data name="InvalidCredentials" xml:space="preserve">
         <value>Invalid username or password.</value>
+    </data>
+    <data name="UserBanned" xml:space="preserve">
+        <value>Your account has been suspended.</value>
     </data>
     <data name="UsernameAlreadyTaken" xml:space="preserve">
         <value>The specified username is already taken.</value>

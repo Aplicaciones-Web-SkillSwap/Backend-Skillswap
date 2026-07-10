@@ -22,4 +22,12 @@ public class SanctionRepository(AppDbContext context)
             .Where(s => s.ReportId == reportId)
             .ToListAsync(cancellationToken);
     }
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<Sanction>> FindBySanctionedUserIdAsync(int userId, CancellationToken cancellationToken)
+    {
+        return await Context.Set<Sanction>()
+            .Where(s => s.SanctionedUserId.UserId == userId)
+            .ToListAsync(cancellationToken);
+    }
 }
