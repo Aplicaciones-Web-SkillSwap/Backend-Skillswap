@@ -44,14 +44,14 @@ public class AuthenticationController(
     [SwaggerOperation("Sign Up", "Register a new user with an institutional (.edu.pe) email.",
         OperationId = "SignUp")]
     [SwaggerResponse(200, "The user was created successfully.")]
-    [SwaggerResponse(400, "The email is not a valid institutional (.edu.pe) email, or the role is invalid.")]
+    [SwaggerResponse(400, "The email is not a valid institutional (.edu.pe) email.")]
     [SwaggerResponse(409, "The username or email is already taken.")]
     public async Task<IActionResult> SignUp(SignUpResource resource, CancellationToken cancellationToken)
     {
-        if (!Enum.TryParse<UserRole>(resource.Role, true, out var role))
-            return BadRequest(new { message = "Role must be one of: Student, Coordinator." });
-
-        var signUpCommand = SignUpCommandFromResourceAssembler.ToCommandFromResource(resource, role);
+        // Self-registration can only ever create Student accounts. Coordinator accounts
+        // are created directly in the database, never through this endpoint — the client
+        // cannot elevate its own role by submitting a different value here.
+        var signUpCommand = SignUpCommandFromResourceAssembler.ToCommandFromResource(resource, UserRole.Student);
         var result = await userCommandService.Handle(signUpCommand, cancellationToken);
 
         return IamActionResultAssembler.ToActionResultFromSignUpResult(
