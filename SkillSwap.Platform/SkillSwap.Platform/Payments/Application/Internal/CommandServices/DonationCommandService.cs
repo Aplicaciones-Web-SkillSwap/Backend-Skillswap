@@ -62,18 +62,18 @@ public class DonationCommandService(
             return Result<DonationResult>.Failure(PaymentsError.NoCompletedSessionWithTutor,
                 _localizer[nameof(PaymentsError.NoCompletedSessionWithTutor)]);
 
-        var senderWallet = await walletRepository.FindByUserIdAsync(command.FromUserId, cancellationToken);
-        if (senderWallet is null)
-            return Result<DonationResult>.Failure(PaymentsError.SenderWalletNotFound,
-                _localizer[nameof(PaymentsError.SenderWalletNotFound)]);
-
+        // El wallet representa el dinero que un tutor recibió por donaciones, no un saldo
+        // prepagado que el estudiante necesita tener: la donación se paga a través del
+        // método de pago simulado (tarjeta/banco/Yape). Por eso el emisor no necesita wallet,
+        // y si el receptor todavía no tiene una se aprovisiona automáticamente aquí.
         var receiverWallet = await walletRepository.FindByUserIdAsync(command.ToUserId, cancellationToken);
         if (receiverWallet is null)
-            return Result<DonationResult>.Failure(PaymentsError.ReceiverWalletNotFound,
-                _localizer[nameof(PaymentsError.ReceiverWalletNotFound)]);
+        {
+            receiverWallet = new Domain.Model.Aggregates.Wallet(new CreateWalletCommand(command.ToUserId));
+            await walletRepository.AddAsync(receiverWallet, cancellationToken);
+            await unitOfWork.CompleteAsync(cancellationToken);
+        }
 
-        // La donación se paga a través del método de pago simulado (tarjeta/banco/Yape),
-        // no con el saldo interno de la wallet, así que no se exige saldo previo.
         var platformFee = Math.Round(command.Amount * PlatformFeeRate, 2);
         var amountReceived = command.Amount - platformFee;
 
@@ -83,10 +83,8 @@ public class DonationCommandService(
         {
             await unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                senderWallet.Deduct(command.Amount);
                 receiverWallet.AddFunds(new Domain.Model.Commands.AddFundsCommand(receiverWallet.Id, amountReceived));
 
-                walletRepository.Update(senderWallet);
                 walletRepository.Update(receiverWallet);
 
                 var transaction = new Domain.Model.Aggregates.Transaction(
@@ -104,7 +102,7 @@ public class DonationCommandService(
                     command.Amount,
                     platformFee,
                     amountReceived,
-                    senderWallet.Balance,
+                    0m,
                     receiverWallet.Balance);
             }, cancellationToken);
 
