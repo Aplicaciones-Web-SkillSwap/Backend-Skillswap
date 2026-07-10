@@ -25,5 +25,14 @@ public static class ModelBuilderExtensions
         builder.Entity<Transaction>().Property(t => t.Type).IsRequired().HasMaxLength(50);
         builder.Entity<Transaction>().Property(t => t.Description).IsRequired().HasMaxLength(500);
         builder.Entity<Transaction>().Property(t => t.CreatedAt).IsRequired();
+
+        builder.Entity<PaymentMethod>().ToTable("payment_methods");
+        builder.Entity<PaymentMethod>().HasKey(p => p.Id);
+        builder.Entity<PaymentMethod>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<PaymentMethod>().Property(p => p.UserId).IsRequired();
+        builder.Entity<PaymentMethod>().HasIndex(p => p.UserId).IsUnique();
+        builder.Entity<PaymentMethod>().Property(p => p.Type).IsRequired().HasMaxLength(20);
+        builder.Entity<PaymentMethod>().Property(p => p.DisplayLabel).IsRequired().HasMaxLength(100);
+        builder.Entity<PaymentMethod>().Property(p => p.CreatedAt).IsRequired();
     }
 }
