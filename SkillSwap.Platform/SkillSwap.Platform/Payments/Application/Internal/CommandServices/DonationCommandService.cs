@@ -72,10 +72,8 @@ public class DonationCommandService(
             return Result<DonationResult>.Failure(PaymentsError.ReceiverWalletNotFound,
                 _localizer[nameof(PaymentsError.ReceiverWalletNotFound)]);
 
-        if (senderWallet.Balance < command.Amount)
-            return Result<DonationResult>.Failure(PaymentsError.InsufficientFunds,
-                _localizer[nameof(PaymentsError.InsufficientFunds)]);
-
+        // La donación se paga a través del método de pago simulado (tarjeta/banco/Yape),
+        // no con el saldo interno de la wallet, así que no se exige saldo previo.
         var platformFee = Math.Round(command.Amount * PlatformFeeRate, 2);
         var amountReceived = command.Amount - platformFee;
 
