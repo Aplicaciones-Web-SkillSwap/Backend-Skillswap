@@ -20,6 +20,11 @@ public static class ModelBuilderExtensions
             v.WithOwner().HasForeignKey("Id");
             v.Property(p => p.TutorId).HasColumnName("ReviewedTutorId");
         });
+        builder.Entity<Review>().OwnsOne(r => r.ReviewedLearnerId, v =>
+        {
+            v.WithOwner().HasForeignKey("Id");
+            v.Property(p => p.LearnerId).HasColumnName("ReviewedLearnerId");
+        });
         builder.Entity<Review>().Property(r => r.SessionId).IsRequired();
         builder.Entity<Review>().Property(r => r.Rating).IsRequired();
         builder.Entity<Review>().Property(r => r.Comment).IsRequired().HasMaxLength(1000);

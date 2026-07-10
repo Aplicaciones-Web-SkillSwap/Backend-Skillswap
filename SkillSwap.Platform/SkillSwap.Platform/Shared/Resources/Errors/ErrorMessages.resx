@@ -58,11 +58,8 @@
     <data name="SessionNotCompleted" xml:space="preserve">
         <value>Reviews can only be left for a completed session.</value>
     </data>
-    <data name="ReviewerNotSessionLearner" xml:space="preserve">
-        <value>Only the learner of this session can leave a review for it.</value>
-    </data>
-    <data name="TutorMismatch" xml:space="preserve">
-        <value>The specified tutor does not match this session's tutor.</value>
+    <data name="ReviewerNotSessionParticipant" xml:space="preserve">
+        <value>Only a participant of this session (the learner or the tutor) can leave a review for it.</value>
     </data>
     <data name="NotSessionParticipant" xml:space="preserve">
         <value>You are not a participant of this session.</value>
