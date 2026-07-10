@@ -27,6 +27,9 @@ namespace SkillSwap.Platform.Moderation.Interfaces.Rest.Resources;
 /// <param name="ReportedAt">
 ///     The date and time the report was created
 /// </param>
+/// <param name="ResolvedAt">
+///     The date and time the report was resolved (closed), if it has been
+/// </param>
 public record ReportResource(
     int Id,
     int ReporterUserId,
@@ -35,4 +38,5 @@ public record ReportResource(
     string Reason,
     string Status,
     bool Closed,
-    DateTime ReportedAt);
+    DateTime ReportedAt,
+    DateTime? ResolvedAt);
