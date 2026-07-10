@@ -20,7 +20,7 @@ namespace SkillSwap.Platform.Reputation.Application.Internal.CommandServices;
 /// </param>
 /// <param name="sessionRepository">
 ///     Workspace session repository, used to validate the review is tied to a real, completed
-///     session where the reviewer was the learner.
+///     session the reviewer actually participated in (as either the learner or the tutor).
 /// </param>
 /// <param name="unitOfWork">
 ///     Unit of work
@@ -53,13 +53,11 @@ public class ReviewCommandService(
             return Result<Review>.Failure(ReputationError.SessionNotCompleted,
                 _localizer[nameof(ReputationError.SessionNotCompleted)]);
 
-        if (session.SessionLearnerId.UserId != command.ReviewerId)
-            return Result<Review>.Failure(ReputationError.ReviewerNotSessionLearner,
-                _localizer[nameof(ReputationError.ReviewerNotSessionLearner)]);
-
-        if (session.SessionTutorId.UserId != command.TutorId)
-            return Result<Review>.Failure(ReputationError.TutorMismatch,
-                _localizer[nameof(ReputationError.TutorMismatch)]);
+        var isLearner = session.SessionLearnerId.UserId == command.ReviewerId;
+        var isTutor = session.SessionTutorId.UserId == command.ReviewerId;
+        if (!isLearner && !isTutor)
+            return Result<Review>.Failure(ReputationError.ReviewerNotSessionParticipant,
+                _localizer[nameof(ReputationError.ReviewerNotSessionParticipant)]);
 
         var alreadyExists = await reviewRepository.ExistsByReviewerAndSessionAsync(
             command.ReviewerId, command.SessionId, cancellationToken);
@@ -67,7 +65,12 @@ public class ReviewCommandService(
             return Result<Review>.Failure(ReputationError.DuplicateReview,
                 _localizer[nameof(ReputationError.DuplicateReview)]);
 
-        var review = new Review(command);
+        var resolvedCommand = command with
+        {
+            TutorId = session.SessionTutorId.UserId,
+            LearnerId = session.SessionLearnerId.UserId
+        };
+        var review = new Review(resolvedCommand);
         try
         {
             await reviewRepository.AddAsync(review, cancellationToken);

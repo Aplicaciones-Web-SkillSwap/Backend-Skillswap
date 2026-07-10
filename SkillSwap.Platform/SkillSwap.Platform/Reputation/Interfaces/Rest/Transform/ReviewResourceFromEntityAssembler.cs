@@ -23,6 +23,7 @@ public static class ReviewResourceFromEntityAssembler
             entity.Id,
             entity.ReviewerUserId.UserId,
             entity.ReviewedTutorId.TutorId,
+            entity.ReviewedLearnerId.LearnerId,
             entity.SessionId,
             entity.Rating,
             entity.Comment,

@@ -8,8 +8,7 @@ public enum ReputationError
     DuplicateReview,
     SessionNotFound,
     SessionNotCompleted,
-    ReviewerNotSessionLearner,
-    TutorMismatch,
+    ReviewerNotSessionParticipant,
     OperationCancelled,
     DatabaseError,
     InternalServerError

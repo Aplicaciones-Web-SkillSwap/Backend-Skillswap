@@ -26,7 +26,6 @@ public static class CreateReviewCommandFromResourceAssembler
     {
         return new CreateReviewCommand(
             reviewerId,
-            resource.TutorId,
             resource.SessionId,
             resource.Rating,
             resource.Comment);
