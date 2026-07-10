@@ -16,6 +16,7 @@ public partial class Review
     {
         ReviewerUserId = new ReviewerId();
         ReviewedTutorId = new ReviewedTutorId();
+        ReviewedLearnerId = new ReviewedLearnerId();
         SessionId = 0;
         Rating = 0;
         Comment = string.Empty;
@@ -26,6 +27,7 @@ public partial class Review
     {
         ReviewerUserId = new ReviewerId(command.ReviewerId);
         ReviewedTutorId = new ReviewedTutorId(command.TutorId);
+        ReviewedLearnerId = new ReviewedLearnerId(command.LearnerId);
         SessionId = command.SessionId;
         Rating = command.Rating;
         Comment = command.Comment;
@@ -35,6 +37,7 @@ public partial class Review
     public int Id { get; private set; }
     public ReviewerId ReviewerUserId { get; private set; }
     public ReviewedTutorId ReviewedTutorId { get; private set; }
+    public ReviewedLearnerId ReviewedLearnerId { get; private set; }
     public int SessionId { get; private set; }
     public int Rating { get; private set; }
     public string Comment { get; private set; }
