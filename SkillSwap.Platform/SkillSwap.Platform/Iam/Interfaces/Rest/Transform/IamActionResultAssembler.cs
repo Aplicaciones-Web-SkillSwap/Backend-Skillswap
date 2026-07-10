@@ -17,6 +17,7 @@ public static class IamActionResultAssembler
         return error switch
         {
             IamError.InvalidCredentials => StatusCodes.Status401Unauthorized,
+            IamError.UserBanned => StatusCodes.Status403Forbidden,
             IamError.UsernameAlreadyTaken => StatusCodes.Status409Conflict,
             IamError.EmailAlreadyTaken => StatusCodes.Status409Conflict,
             IamError.InvalidInstitutionalEmail => StatusCodes.Status400BadRequest,

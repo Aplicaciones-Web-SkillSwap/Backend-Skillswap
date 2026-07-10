@@ -29,7 +29,8 @@ public static class CreateSanctionCommandFromResourceAssembler
             resource.SanctionedUserId,
             resource.Type,
             resource.Description,
-            resource.DurationDays
+            resource.DurationDays,
+            resource.IsPermanent
         );
     }
 }

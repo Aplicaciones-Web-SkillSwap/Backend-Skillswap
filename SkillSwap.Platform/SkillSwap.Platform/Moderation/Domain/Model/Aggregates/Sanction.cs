@@ -17,6 +17,7 @@ public partial class Sanction
         SanctionedUserId = new SanctionedUserId();
         Type = "warning";
         Description = string.Empty;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public Sanction(CreateSanctionCommand command)
@@ -26,6 +27,8 @@ public partial class Sanction
         Type = command.Type;
         Description = command.Description;
         DurationDays = command.DurationDays;
+        IsPermanent = command.IsPermanent;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public int Id { get; private set; }
@@ -34,6 +37,13 @@ public partial class Sanction
     public string Type { get; private set; }
     public string Description { get; private set; }
     public int DurationDays { get; private set; }
+    public bool IsPermanent { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? AcknowledgedAt { get; private set; }
 
     public bool IsBan => Type == "ban";
+
+    public bool IsActiveBanAt(DateTime nowUtc) => IsBan && (IsPermanent || CreatedAt.AddDays(DurationDays) > nowUtc);
+
+    public void Acknowledge() => AcknowledgedAt = DateTime.UtcNow;
 }

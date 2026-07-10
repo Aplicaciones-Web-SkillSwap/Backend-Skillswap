@@ -4,6 +4,7 @@ public enum IamError
 {
     None,
     InvalidCredentials,
+    UserBanned,
     UsernameAlreadyTaken,
     EmailAlreadyTaken,
     InvalidInstitutionalEmail,

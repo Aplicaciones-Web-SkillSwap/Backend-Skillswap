@@ -7,6 +7,7 @@ using SkillSwap.Platform.Iam.Domain.Model;
 using SkillSwap.Platform.Iam.Domain.Model.Aggregates;
 using SkillSwap.Platform.Iam.Domain.Model.Commands;
 using SkillSwap.Platform.Iam.Domain.Repositories;
+using SkillSwap.Platform.Moderation.Domain.Repositories;
 using SkillSwap.Platform.Shared.Application.Model;
 using SkillSwap.Platform.Shared.Domain.Repositories;
 using SkillSwap.Platform.Shared.Resources.Errors;
@@ -19,12 +20,14 @@ namespace SkillSwap.Platform.Iam.Application.Internal.CommandServices;
 /// <param name="userRepository">User repository</param>
 /// <param name="tokenService">Token service</param>
 /// <param name="hashingService">Hashing service</param>
+/// <param name="sanctionRepository">Sanction repository, used to reject sign-in for currently banned users</param>
 /// <param name="unitOfWork">Unit of work</param>
 /// <param name="localizer">String localizer for error messages</param>
 public partial class UserCommandService(
     IUserRepository userRepository,
     ITokenService tokenService,
     IHashingService hashingService,
+    ISanctionRepository sanctionRepository,
     IUnitOfWork unitOfWork,
     IStringLocalizer<ErrorMessage> localizer)
     : IUserCommandService
@@ -75,6 +78,17 @@ public partial class UserCommandService(
         if (user is null || !hashingService.VerifyPassword(command.Password, user.PasswordHash))
             return Result<(User User, string Token)>.Failure(IamError.InvalidCredentials,
                 _localizer[nameof(IamError.InvalidCredentials)]);
+
+        var nowUtc = DateTime.UtcNow;
+        var userSanctions = await sanctionRepository.FindBySanctionedUserIdAsync(user.Id, cancellationToken);
+        var activeBan = userSanctions.FirstOrDefault(s => s.IsActiveBanAt(nowUtc));
+        if (activeBan is not null)
+        {
+            var message = activeBan.IsPermanent
+                ? "Tu cuenta ha sido suspendida permanentemente."
+                : $"Tu cuenta está suspendida hasta el {activeBan.CreatedAt.AddDays(activeBan.DurationDays):dd/MM/yyyy}.";
+            return Result<(User User, string Token)>.Failure(IamError.UserBanned, message);
+        }
 
         var token = tokenService.GenerateToken(user);
         return Result<(User User, string Token)>.Success((user, token));

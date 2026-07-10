@@ -1,10 +1,12 @@
 using System.Net.Mime;
 using SkillSwap.Platform.Moderation.Application.CommandServices;
 using SkillSwap.Platform.Moderation.Application.QueryServices;
+using SkillSwap.Platform.Moderation.Domain.Model.Commands;
 using SkillSwap.Platform.Moderation.Domain.Model.Queries;
 using SkillSwap.Platform.Moderation.Interfaces.Rest.Resources;
 using SkillSwap.Platform.Moderation.Interfaces.Rest.Transform;
 using SkillSwap.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+using SkillSwap.Platform.Shared.Interfaces.Rest;
 using SkillSwap.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using SkillSwap.Platform.Shared.Resources.Errors;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +16,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace SkillSwap.Platform.Moderation.Interfaces.Rest;
 
-[Authorize(Roles = "Coordinator")]
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
@@ -29,7 +31,40 @@ public class SanctionsController(
     private readonly IStringLocalizer<ErrorMessage> _errorLocalizer = errorLocalizer;
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
+    [HttpGet("me")]
+    [SwaggerOperation("Get My Sanctions", "Get all sanctions applied to the currently authenticated user.",
+        OperationId = "GetMySanctions")]
+    [SwaggerResponse(200, "The sanctions were found and returned.", typeof(IEnumerable<SanctionResource>))]
+    public async Task<IActionResult> GetMySanctions(CancellationToken cancellationToken)
+    {
+        var query = new GetSanctionsBySanctionedUserIdQuery(this.CurrentUserId());
+        var sanctions = await sanctionQueryService.Handle(query, cancellationToken);
+        var sanctionResources = sanctions.Select(SanctionResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(sanctionResources);
+    }
+
+    [HttpPatch("{sanctionId:int}/acknowledge")]
+    [SwaggerOperation("Acknowledge Sanction", "Mark a sanction as seen by the sanctioned user.",
+        OperationId = "AcknowledgeSanction")]
+    [SwaggerResponse(200, "The sanction was acknowledged.", typeof(SanctionResource))]
+    [SwaggerResponse(403, "The sanction does not belong to the current user.")]
+    [SwaggerResponse(404, "The sanction was not found.")]
+    public async Task<IActionResult> AcknowledgeSanction(int sanctionId, CancellationToken cancellationToken)
+    {
+        var command = new AcknowledgeSanctionCommand(sanctionId, this.CurrentUserId());
+        var result = await sanctionCommandService.Handle(command, cancellationToken);
+
+        return ModerationActionResultAssembler.ToActionResultFromAcknowledgeSanctionResult(
+            this,
+            result,
+            _errorLocalizer,
+            _problemDetailsFactory,
+            acknowledged => Ok(SanctionResourceFromEntityAssembler.ToResourceFromEntity(acknowledged))
+        );
+    }
+
     [HttpGet("{sanctionId:int}")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Get Sanction by Id", "Get a sanction by its unique identifier.",
         OperationId = "GetSanctionById")]
     [SwaggerResponse(200, "The sanction was found and returned.", typeof(SanctionResource))]
@@ -49,6 +84,7 @@ public class SanctionsController(
     }
 
     [HttpPost]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Create Sanction", "Create a new sanction for an existing report.",
         OperationId = "CreateSanction")]
     [SwaggerResponse(201, "The sanction was created.", typeof(SanctionResource))]
@@ -71,6 +107,7 @@ public class SanctionsController(
     }
 
     [HttpGet]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Get All Sanctions", "Get all sanctions.", OperationId = "GetAllSanctions")]
     [SwaggerResponse(200, "The sanctions were found and returned.", typeof(IEnumerable<SanctionResource>))]
     public async Task<IActionResult> GetAllSanctions(CancellationToken cancellationToken)
@@ -82,6 +119,7 @@ public class SanctionsController(
     }
 
     [HttpGet("report/{reportId:int}")]
+    [Authorize(Roles = "Coordinator")]
     [SwaggerOperation("Get Sanctions By Report Id", "Get all sanctions associated with a specific report.",
         OperationId = "GetSanctionsByReportId")]
     [SwaggerResponse(200, "The sanctions were found and returned.", typeof(IEnumerable<SanctionResource>))]
