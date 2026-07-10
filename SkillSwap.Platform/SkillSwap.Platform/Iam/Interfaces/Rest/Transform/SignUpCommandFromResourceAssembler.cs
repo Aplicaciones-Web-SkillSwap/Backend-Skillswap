@@ -11,6 +11,10 @@ public static class SignUpCommandFromResourceAssembler
 {
     public static SignUpCommand ToCommandFromResource(SignUpResource resource, UserRole role)
     {
-        return new SignUpCommand(resource.Username, resource.Email, resource.Password, role);
+        return new SignUpCommand(
+            resource.Username.Trim(),
+            resource.Email.Trim(),
+            resource.Password.Trim(),
+            role);
     }
 }
