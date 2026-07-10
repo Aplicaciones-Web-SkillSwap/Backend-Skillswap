@@ -11,6 +11,7 @@ public enum PaymentsError
     ReceiverWalletNotFound,
     SelfDonationNotAllowed,
     NoCompletedSessionWithTutor,
+    InvalidPaymentMethodType,
     OperationCancelled,
     DatabaseError,
     InternalServerError

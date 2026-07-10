@@ -79,6 +79,9 @@
     <data name="NoCompletedSessionWithTutor" xml:space="preserve">
         <value>You need a completed session with this tutor before you can donate to them.</value>
     </data>
+    <data name="InvalidPaymentMethodType" xml:space="preserve">
+        <value>Payment method type must be "card", "bank" or "yape".</value>
+    </data>
     <data name="NotTutorOwner" xml:space="preserve">
         <value>You can only update your own tutor profile.</value>
     </data>

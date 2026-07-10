@@ -137,10 +137,13 @@ builder.Services.AddScoped<IReviewQueryService, ReviewQueryService>();
 // Payments Bounded Context
 builder.Services.AddScoped<IWalletRepository, WalletRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
 builder.Services.AddScoped<IWalletCommandService, WalletCommandService>();
 builder.Services.AddScoped<ITransactionCommandService, TransactionCommandService>();
+builder.Services.AddScoped<IPaymentMethodCommandService, PaymentMethodCommandService>();
 builder.Services.AddScoped<IWalletQueryService, WalletQueryService>();
 builder.Services.AddScoped<ITransactionQueryService, TransactionQueryService>();
+builder.Services.AddScoped<IPaymentMethodQueryService, PaymentMethodQueryService>();
 builder.Services.AddScoped<IDonationCommandService, DonationCommandService>();
 
 // Learning Bounded Context
