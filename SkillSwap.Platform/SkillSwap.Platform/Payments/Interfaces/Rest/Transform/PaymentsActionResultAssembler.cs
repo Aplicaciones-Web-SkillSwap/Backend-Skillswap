@@ -24,6 +24,7 @@ public static class PaymentsActionResultAssembler
             PaymentsError.ReceiverWalletNotFound => StatusCodes.Status404NotFound,
             PaymentsError.SelfDonationNotAllowed => StatusCodes.Status400BadRequest,
             PaymentsError.NoCompletedSessionWithTutor => StatusCodes.Status400BadRequest,
+            PaymentsError.InvalidPaymentMethodType => StatusCodes.Status400BadRequest,
             PaymentsError.OperationCancelled => StatusCodes.Status409Conflict,
             PaymentsError.DatabaseError => StatusCodes.Status500InternalServerError,
             PaymentsError.InternalServerError => StatusCodes.Status500InternalServerError,
@@ -90,6 +91,18 @@ public static class PaymentsActionResultAssembler
         IStringLocalizer<ErrorMessage> errorLocalizer,
         ProblemDetailsFactory problemDetailsFactory,
         Func<DonationResult, IActionResult> successAction)
+    {
+        if (result.IsSuccess) return successAction(result.Value!);
+        var statusCode = ToStatusCodeFromPaymentsError((PaymentsError)result.Error!);
+        return problemDetailsFactory.CreateProblemDetails(controller, statusCode, result.Error, result.Message);
+    }
+
+    public static IActionResult ToActionResultFromSavePaymentMethodResult(
+        ControllerBase controller,
+        Result<PaymentMethod> result,
+        IStringLocalizer<ErrorMessage> errorLocalizer,
+        ProblemDetailsFactory problemDetailsFactory,
+        Func<PaymentMethod, IActionResult> successAction)
     {
         if (result.IsSuccess) return successAction(result.Value!);
         var statusCode = ToStatusCodeFromPaymentsError((PaymentsError)result.Error!);
