@@ -31,7 +31,8 @@ public static class ReportResourceFromEntityAssembler
             entity.Reason,
             entity.Status,
             entity.Closed,
-            entity.ReportedAt
+            entity.ReportedAt,
+            entity.ResolvedAt
         );
     }
 }
