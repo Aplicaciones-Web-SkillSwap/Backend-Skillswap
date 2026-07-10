@@ -6,6 +6,8 @@ using SkillSwap.Platform.Moderation.Domain.Repositories;
 using SkillSwap.Platform.Shared.Application.Model;
 using SkillSwap.Platform.Shared.Domain.Repositories;
 using SkillSwap.Platform.Shared.Resources.Errors;
+using SkillSwap.Platform.Workspace.Domain.Model.Commands;
+using SkillSwap.Platform.Workspace.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
@@ -20,17 +22,41 @@ namespace SkillSwap.Platform.Moderation.Application.Internal.CommandServices;
 /// <param name="reportRepository">
 ///     Report repository, used to validate that the related report exists
 /// </param>
+/// <param name="sessionRepository">
+///     Session repository, used to auto-complete a banned user's active sessions
+/// </param>
 /// <param name="unitOfWork">
 ///     Unit of work
 /// </param>
 public class SanctionCommandService(
     ISanctionRepository sanctionRepository,
     IReportRepository reportRepository,
+    ISessionRepository sessionRepository,
     IUnitOfWork unitOfWork,
     IStringLocalizer<ErrorMessage> localizer)
     : ISanctionCommandService
 {
     private readonly IStringLocalizer<ErrorMessage> _localizer = localizer;
+
+    /// <summary>
+    ///     A banned user can no longer connect to attend a session, so any session of theirs
+    ///     that's still scheduled or in progress (as either learner or tutor) is auto-completed.
+    /// </summary>
+    private async Task CompleteActiveSessionsForBannedUserAsync(int userId, CancellationToken cancellationToken)
+    {
+        var learnerSessions = await sessionRepository.FindByLearnerIdAsync(userId, cancellationToken);
+        var tutorSessions = await sessionRepository.FindByTutorIdAsync(userId, cancellationToken);
+        var activeSessions = learnerSessions.Concat(tutorSessions)
+            .Where(s => s.Status is "scheduled" or "in_progress");
+
+        foreach (var session in activeSessions)
+        {
+            session.UpdateStatus(new UpdateSessionStatusCommand(session.Id, "completed", userId));
+            sessionRepository.Update(session);
+        }
+
+        await unitOfWork.CompleteAsync(cancellationToken);
+    }
 
     /// <inheritdoc />
     public async Task<Result<Sanction>> Handle(CreateSanctionCommand command, CancellationToken cancellationToken)
@@ -49,6 +75,9 @@ public class SanctionCommandService(
         {
             await sanctionRepository.AddAsync(sanction, cancellationToken);
             await unitOfWork.CompleteAsync(cancellationToken);
+
+            if (command.Type == "ban")
+                await CompleteActiveSessionsForBannedUserAsync(command.SanctionedUserId, cancellationToken);
 
             // Un usuario que acumula 3 advertencias en el mismo mes calendario recibe
             // automáticamente un ban de 1 mes, además de la advertencia recién creada.
@@ -70,6 +99,7 @@ public class SanctionCommandService(
                     });
                     await sanctionRepository.AddAsync(autoBan, cancellationToken);
                     await unitOfWork.CompleteAsync(cancellationToken);
+                    await CompleteActiveSessionsForBannedUserAsync(command.SanctionedUserId, cancellationToken);
                 }
             }
 
